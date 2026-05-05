@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J. Kumar Infraprojects – IT Helpdesk</title>
+<!-- FIX #6: Favicon/Tab Logo using SVG data URI -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox='0 0 42 50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='42' height='50' rx='6' fill='%23000'/%3E%3Ccircle cx='21' cy='17' r='12' fill='%23F5C842'/%3E%3Crect x='6' y='26' width='30' height='15' fill='%23C8960A'/%3E%3Cpolygon points='21,8 30,25 12,25' fill='%23C0392B'/%3E%3Ctext x='21' y='22' font-family='serif' font-size='9' font-weight='bold' fill='white' text-anchor='middle'%3EJ%3C/text%3E%3Ctext x='21' y='46' font-family='sans-serif' font-size='6' font-weight='800' fill='white' text-anchor='middle'%3EJ. Kumar%3C/text%3E%3C/svg%3E">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#060b14;--gold:#e8a020;--gold2:#f5c842;--gold3:#c8860a;
+  --text:#f0f4ff;--muted:#7b8db0;
+  --font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{background:var(--dark);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column;}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(232,160,32,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,160,32,.04) 1px,transparent 1px);background-size:56px 56px;}
+.bg-glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:380px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(ellipse,rgba(232,160,32,.09) 0%,transparent 70%);animation:glow 5s ease-in-out infinite;}
+@keyframes glow{0%,100%{opacity:.7}50%{opacity:1}}
+.header{position:relative;z-index:10;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(232,160,32,.1);background:rgba(6,11,20,.7);backdrop-filter:blur(16px);}
+.brand{display:flex;align-items:center;gap:12px}
+.logo-wrap{width:42px;height:50px;border-radius:7px;overflow:hidden;border:1px solid rgba(232,160,32,.35);background:#000;flex-shrink:0;}
+.bn{font-size:14px;font-weight:800;color:var(--gold2);letter-spacing:.2px}
+.bs{font-size:10px;color:var(--muted);margin-top:2px}
+.header-badge{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.25);color:var(--gold2);font-size:10px;font-weight:700;padding:5px 13px;border-radius:20px;letter-spacing:.4px;}
+main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;position:relative;z-index:1;}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.18);color:var(--gold2);font-size:10px;font-weight:700;padding:5px 14px;border-radius:20px;margin-bottom:24px;letter-spacing:.6px;text-transform:uppercase;animation:up .5s ease both;}
+h1{font-size:clamp(32px,5.5vw,64px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;text-align:center;margin-bottom:16px;animation:up .55s ease .08s both;}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold2),var(--gold3),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:shimmer 3s linear infinite;}
+@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+.sub{font-size:15px;color:var(--muted);text-align:center;max-width:460px;line-height:1.65;margin-bottom:48px;font-weight:400;animation:up .55s ease .16s both;}
+.stats-bar{display:flex;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:48px;overflow:hidden;animation:up .55s ease .22s both;}
+.sb-item{padding:12px 28px;text-align:center;border-right:1px solid rgba(255,255,255,.07);}
+.sb-item:last-child{border-right:none}
+/* FIX #3: Blink animation for In Progress stat */
+.sb-num{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--gold2)}
+.sb-num-prog{font-family:var(--mono);font-size:22px;font-weight:500;color:#fbbf24;animation:blink-prog 2s ease-in-out infinite;}
+@keyframes blink-prog{0%,100%{opacity:1;text-shadow:0 0 8px rgba(251,191,36,.6)}50%{opacity:.4;text-shadow:none}}
+.sb-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:900px;animation:up .6s ease .28s both;}
+.pcard-call{background:linear-gradient(145deg,#0a1a0a,#0f2010);border:1px solid rgba(34,197,94,.2);}
+.pcard-call:hover{border-color:rgba(34,197,94,.5);box-shadow:0 20px 50px rgba(34,197,94,.1);}
+.pcard-cadm{background:linear-gradient(145deg,#1a0a1a,#200f20);border:1px solid rgba(139,92,246,.2);}
+.pcard-cadm:hover{border-color:rgba(139,92,246,.5);box-shadow:0 20px 50px rgba(139,92,246,.1);}
+.pcard-call .card-title{color:#86efac}.pcard-cadm .card-title{color:#c4b5fd}
+.pcard-call .card-cta{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.2)}
+.pcard-call:hover .card-cta{background:rgba(34,197,94,.22)}
+.pcard-cadm .card-cta{background:rgba(139,92,246,.12);color:#c4b5fd;border:1px solid rgba(139,92,246,.2)}
+.pcard-cadm:hover .card-cta{background:rgba(139,92,246,.22)}
+.cb-call{background:rgba(34,197,94,.12);color:#86efac;border:1px solid rgba(34,197,94,.25)}
+.cb-cadm{background:rgba(139,92,246,.12);color:#c4b5fd;border:1px solid rgba(139,92,246,.25)}
+.pcard{display:block;text-decoration:none;border-radius:18px;padding:32px 28px;transition:.35s cubic-bezier(.22,1,.36,1);}
+.pcard:hover{transform:translateY(-5px)}
+.pcard-emp{background:linear-gradient(145deg,#0c1a30,#111f3a);border:1px solid rgba(59,130,246,.2);}
+.pcard-emp:hover{border-color:rgba(59,130,246,.5);box-shadow:0 20px 50px rgba(59,130,246,.12);}
+.pcard-adm{background:linear-gradient(145deg,#130e02,#1c1504);border:1px solid rgba(232,160,32,.2);}
+.pcard-adm:hover{border-color:rgba(232,160,32,.5);box-shadow:0 20px 50px rgba(232,160,32,.1);}
+.card-badge{display:inline-block;font-size:9px;font-weight:700;padding:3px 11px;border-radius:20px;margin-bottom:18px;letter-spacing:.5px;text-transform:uppercase;}
+.cb-emp{background:rgba(59,130,246,.12);color:#7eb8f7;border:1px solid rgba(59,130,246,.25)}
+.cb-adm{background:rgba(232,160,32,.1);color:var(--gold2);border:1px solid rgba(232,160,32,.25)}
+.card-icon{font-size:40px;margin-bottom:14px;display:block}
+.card-title{font-size:22px;font-weight:800;margin-bottom:9px;line-height:1.2;letter-spacing:-.3px;}
+.pcard-emp .card-title{color:#93c5fd}
+.pcard-adm .card-title{color:var(--gold2)}
+.card-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:22px;font-weight:400}
+.card-cta{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.2px;padding:10px 18px;border-radius:9px;transition:.2s;}
+.pcard-emp .card-cta{background:rgba(59,130,246,.12);color:#7eb8f7;border:1px solid rgba(59,130,246,.2)}
+.pcard-emp:hover .card-cta{background:rgba(59,130,246,.22)}
+.pcard-adm .card-cta{background:rgba(232,160,32,.1);color:var(--gold2);border:1px solid rgba(232,160,32,.2)}
+.pcard-adm:hover .card-cta{background:rgba(232,160,32,.2)}
+footer{position:relative;z-index:1;text-align:center;padding:20px 24px;border-top:1px solid rgba(255,255,255,.05);font-size:11px;color:var(--muted);line-height:1.8;}
+footer strong{color:var(--gold2)}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:560px){
+  .cards{grid-template-columns:1fr}
+  .stats-bar{flex-wrap:wrap}
+  .sb-item{flex:1;min-width:90px;border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}
+  .sb-item:last-child{border-bottom:none}
+  .header{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="header">
+  <div class="brand">
+    <div class="logo-wrap">
+      <svg viewBox="0 0 42 50" fill="none" width="42" height="50">
+        <rect width="42" height="50" rx="6" fill="#000"/>
+        <circle cx="21" cy="17" r="12" fill="#F5C842"/>
+        <rect x="6" y="26" width="30" height="15" fill="#C8960A"/>
+        <polygon points="21,8 30,25 12,25" fill="#C0392B"/>
+        <text x="21" y="22" font-family="serif" font-size="9" font-weight="bold" fill="white" text-anchor="middle">J</text>
+        <text x="21" y="35" font-family="sans-serif" font-size="5" font-weight="600" fill="#1a1a2e" text-anchor="middle">Since 1980</text>
+        <text x="21" y="46" font-family="sans-serif" font-size="6" font-weight="800" fill="white" text-anchor="middle">J. Kumar</text>
+      </svg>
+    </div>
+    <div>
+      <div class="bn">J. Kumar Infraprojects Ltd.</div>
+      <div class="bs">IT Helpdesk System</div>
+    </div>
+  </div>
+  <div class="header-badge">🏗️ Internal Portal</div>
+</div>
+
+<main>
+  <div class="eyebrow">🔧 IT Support · J. Kumar Infraprojects</div>
+  <h1>IT Helpdesk<br><em>Management System</em></h1>
+  <p class="sub">Raise IT requests, track status, and manage support tickets — all in one place. Open on any device.</p>
+
+  <div class="stats-bar">
+    <div class="sb-item"><div class="sb-num" id="s-total">0</div><div class="sb-lbl">Total Tickets</div></div>
+    <div class="sb-item"><div class="sb-num" id="s-open" style="color:#f87171">0</div><div class="sb-lbl">Open</div></div>
+    <div class="sb-item"><div class="sb-num-prog" id="s-prog">0</div><div class="sb-lbl">In Progress</div></div>
+    <div class="sb-item"><div class="sb-num" id="s-res" style="color:#4ade80">0</div><div class="sb-lbl">Resolved</div></div>
+  </div>
+
+  <div class="cards">
+    <a href="employee_portal.html" class="pcard pcard-emp">
+      <span class="card-badge cb-emp">👤 For All Employees</span>
+      <span class="card-icon">🎫</span>
+      <div class="card-title">Employee Portal</div>
+      <p class="card-desc">Submit IT support requests from any device — mobile, tablet or desktop. Track your ticket status in real time.</p>
+      <div class="card-cta">Open Portal →</div>
+    </a>
+    <a href="admin_portal.html" class="pcard pcard-adm">
+      <span class="card-badge cb-adm">🔐 IT Team Only</span>
+      <span class="card-icon">📊</span>
+      <div class="card-title">Admin Dashboard</div>
+      <p class="card-desc">Manage all tickets, update status, view analytics and export GM-ready reports. Login required.</p>
+      <div class="card-cta">Open Dashboard →</div>
+    </a>
+    <a href="call_portal.html" class="pcard pcard-call">
+      <span class="card-badge cb-call">👷 Engineers Only</span>
+      <span class="card-icon">📋</span>
+      <div class="card-title">Call Report v2.0</div>
+      <p class="card-desc">Submit detailed call report — problem, parts, PR/Cash purchase, photos. WhatsApp share auto.</p>
+      <div class="card-cta">Submit Call Report →</div>
+    </a>
+    <a href="call_admin.html" class="pcard pcard-cadm">
+      <span class="card-badge cb-cadm">🔐 GM / Admin View</span>
+      <span class="card-icon">🏆</span>
+      <div class="card-title">Call Reports Panel</div>
+      <p class="card-desc">All engineer call reports, purchase register, analytics, export GM PDF with full details.</p>
+      <div class="card-cta">Open Call Panel →</div>
+    </a>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 J. Kumar Infraprojects Limited &nbsp;·&nbsp; IT Helpdesk System &nbsp;·&nbsp;
+  Designed &amp; Developed by <strong>Abhishek Tiwari</strong> &nbsp;|&nbsp; IT Professional
+</footer>
+
+<script type="module">
+import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import { getFirestore, collection, onSnapshot, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyD1NaEmIB9yBh7eoaxOAEV1jVbjE76LZa8",
+  authDomain:"jkumar-ithelpdesk.firebaseapp.com",
+  projectId:"jkumar-ithelpdesk",
+  storageBucket:"jkumar-ithelpdesk.firebasestorage.app",
+  messagingSenderId:"638863597956",
+  appId:"1:638863597956:web:506d8e62c98c29729c3dd1",
+  measurementId:"G-WC1X4SH7MV"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+const q = query(collection(db,"tickets"), orderBy("createdAt","desc"));
+onSnapshot(q, snap => {
+  const t = snap.docs.map(d => d.data());
+  document.getElementById('s-total').textContent = t.length;
+  document.getElementById('s-open').textContent  = t.filter(x=>x.status==='Open').length;
+  document.getElementById('s-prog').textContent  = t.filter(x=>x.status==='In Progress'||x.status==='Assigned').length;
+  document.getElementById('s-res').textContent   = t.filter(x=>x.status==='Resolved'||x.status==='Closed').length;
+}, err => console.warn('Firebase error on index:', err));
+</script>
+</body>
+</html>

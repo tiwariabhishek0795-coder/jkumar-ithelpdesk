@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Call Report – J. Kumar Infraprojects IT</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<!-- Open Graph for WhatsApp preview -->
+<meta property="og:title" content="J. Kumar IT – Call Report">
+<meta property="og:description" content="IT Call Report – J. Kumar Infraprojects Ltd.">
+<meta property="og:image" content="https://jkumar-ithelpdesk.web.app/favicon.svg">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f6f9;--white:#fff;--dark:#1a1a2e;
+  --gold:#e8a020;--gold2:#f5c842;--gold3:#c8860a;
+  --green:#16a34a;--red:#dc2626;--blue:#2563eb;--orange:#d97706;
+  --text:#1e2235;--muted:#6b7280;--bdr:#e5e7eb;
+  --font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border-radius:9px;overflow:hidden;
+  border:2px solid rgba(232,160,32,.4);background:#000;flex-shrink:0}
+.bn{font-size:15px;font-weight:800;color:var(--gold2)}
+.bs{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.share-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+  border-radius:20px;border:none;background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+.share-btn:hover{transform:translateY(-1px)}
+.print-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+  border-radius:20px;border:1px solid rgba(232,160,32,.4);background:rgba(232,160,32,.08);
+  color:var(--gold2);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:.2s}
+/* MAIN */
+.main{max-width:820px;margin:0 auto;padding:24px 16px 60px}
+/* LOADING */
+.loading-wrap{text-align:center;padding:80px 20px;color:var(--muted)}
+.loading-wrap .spin-big{width:48px;height:48px;border:4px solid var(--bdr);
+  border-top-color:var(--gold);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 16px}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* REPORT CARD */
+.report-header{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:16px;
+  padding:24px;margin-bottom:18px;border:2px solid rgba(232,160,32,.3);position:relative;overflow:hidden}
+.report-header::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;
+  border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.12),transparent 70%)}
+.rh-tag{display:inline-block;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.3);
+  color:var(--gold2);font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;
+  margin-bottom:14px;letter-spacing:.5px;text-transform:uppercase}
+.rh-id{font-family:var(--mono);font-size:28px;font-weight:800;color:var(--gold2);margin-bottom:4px}
+.rh-date{font-size:12px;color:rgba(255,255,255,.5)}
+.rh-stats{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+.rhs{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:10px 16px;flex:1;min-width:110px}
+.rhs-lbl{font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.rhs-val{font-size:14px;font-weight:700;color:#fff}
+/* STATUS BADGES */
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;
+  border-radius:20px;font-size:11px;font-weight:700}
+.s-resolved{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.s-pending{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.s-escalated{background:#fee2e2;color:#991b1b;border:1px solid #fecaca}
+.s-inprog{background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe}
+.prio-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.p-low{background:#f0fdf4;color:#16a34a}.p-medium{background:#fffbeb;color:#d97706}
+.p-high{background:#fef2f2;color:#dc2626}.p-critical{background:#fff1f2;color:#9f1239}
+/* SECTION */
+.sec{background:var(--white);border-radius:13px;padding:20px;margin-bottom:14px;
+  border:1px solid var(--bdr);box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.sec-title{font-size:12px;font-weight:700;color:var(--text);text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:7px;
+  padding-bottom:10px;border-bottom:1px solid var(--bdr)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.info-item{display:flex;flex-direction:column;gap:3px}
+.info-item.full{grid-column:1/-1}
+.info-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.info-val{font-size:13px;color:var(--text);line-height:1.5}
+.info-val.mono{font-family:var(--mono);color:var(--blue);font-size:12px}
+.info-val.big{font-size:14px;font-weight:700}
+/* HIGHLIGHT BOXES */
+.prob-box{background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:14px;margin-bottom:12px}
+.prob-box .pb-lbl{font-size:10px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.prob-box .pb-val{font-size:13px;color:#7f1d1d;line-height:1.6}
+.sol-box{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px;margin-bottom:12px}
+.sol-box .pb-lbl{font-size:10px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.sol-box .pb-val{font-size:13px;color:#14532d;line-height:1.6}
+.cause-box{background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:14px;margin-bottom:12px}
+.cause-box .pb-lbl{font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.cause-box .pb-val{font-size:13px;color:#78350f;line-height:1.6}
+/* PARTS TABLE */
+.parts-tbl{width:100%;border-collapse:collapse;font-size:12px}
+.parts-tbl th{background:#f3f4f6;padding:8px 10px;text-align:left;font-size:10px;
+  font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.parts-tbl td{padding:9px 10px;border-bottom:1px solid var(--bdr)}
+.parts-tbl tr:last-child td{border-bottom:none}
+.parts-tbl tr:hover td{background:#f9fafb}
+/* PURCHASE CARD */
+.pur-card{background:linear-gradient(135deg,#fefce8,#fef9c3);border:1.5px solid #fde68a;
+  border-radius:10px;padding:14px}
+.pur-card .pc-hd{font-size:11px;font-weight:800;color:#92400e;margin-bottom:11px;
+  display:flex;align-items:center;gap:6px}
+.pur-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.pur-item{display:flex;flex-direction:column;gap:2px}
+.pur-lbl{font-size:9px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.4px}
+.pur-val{font-size:13px;font-weight:600;color:#78350f}
+.pur-amount{font-size:20px;font-weight:800;color:var(--green);font-family:var(--mono)}
+/* IMAGES */
+.img-grid{display:flex;flex-wrap:wrap;gap:10px}
+.img-card{border-radius:10px;overflow:hidden;border:2px solid var(--bdr);
+  width:140px;height:140px;position:relative;cursor:pointer;transition:.2s}
+.img-card:hover{border-color:var(--gold);transform:scale(1.03)}
+.img-card img{width:100%;height:100%;object-fit:cover}
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.92);
+  display:none;align-items:center;justify-content:center;padding:20px}
+#lightbox.open{display:flex}
+#lightbox img{max-width:90vw;max-height:85vh;border-radius:8px;object-fit:contain}
+#lightbox .lb-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.3);color:#fff;width:38px;height:38px;border-radius:50%;
+  cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center}
+/* FOOTER SECTION */
+.sign-bar{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #bbf7d0;
+  border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.sign-info{display:flex;flex-direction:column;gap:2px}
+.sign-name{font-size:15px;font-weight:800;color:#15803d}
+.sign-sub{font-size:11px;color:#166534}
+.conf-badge{background:#16a34a;color:#fff;padding:8px 16px;border-radius:8px;font-size:11px;font-weight:700}
+/* SHARE SECTION */
+.share-section{background:var(--white);border-radius:13px;padding:20px;margin-bottom:14px;
+  border:1px solid var(--bdr);text-align:center}
+.share-section h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.share-section p{font-size:12px;color:var(--muted);margin-bottom:16px}
+.share-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.shr-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:9px;
+  font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;border:none;transition:.2s}
+.shr-btn:hover{transform:translateY(-1px)}
+.shr-wa{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff}
+.shr-copy{background:#fff;color:var(--text);border:1.5px solid var(--bdr2)!important;border:none}
+.shr-pdf{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff}
+/* NOT FOUND */
+.not-found{text-align:center;padding:80px 20px}
+.not-found .nf-icon{font-size:60px;margin-bottom:16px}
+.not-found h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+.not-found p{font-size:13px;color:var(--muted)}
+/* PRINT */
+@media print{
+  .hdr,.share-section,.hdr-right{display:none!important}
+  body{background:#fff}
+  .main{padding:10px;max-width:100%}
+  .report-header{background:#1a1a2e!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media(max-width:520px){
+  .info-grid{grid-template-columns:1fr}
+  .info-item.full{grid-column:1}
+  .pur-grid{grid-template-columns:1fr}
+  .rh-stats{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="brand">
+    <div class="logo">
+      <svg viewBox="0 0 52 52" fill="none" style="width:52px;height:52px">
+        <rect width="52" height="52" fill="#000"/>
+        <circle cx="26" cy="20" r="15" fill="#F5C842"/>
+        <rect x="7" y="31" width="38" height="16" fill="#C8960A"/>
+        <polygon points="26,9 38,31 14,31" fill="#C0392B"/>
+        <text x="26" y="27" font-family="serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">J</text>
+        <text x="26" y="44" font-family="sans-serif" font-size="7" font-weight="800" fill="white" text-anchor="middle">J. Kumar</text>
+      </svg>
+    </div>
+    <div>
+      <div class="bn">J. Kumar Infraprojects Ltd.</div>
+      <div class="bs">IT Call Report – Official Document</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button class="share-btn" onclick="shareWhatsApp()">📱 Share</button>
+    <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- LOADING -->
+  <div id="loading-wrap" class="loading-wrap">
+    <div class="spin-big"></div>
+    <p>Loading call report...</p>
+  </div>
+
+  <!-- NOT FOUND -->
+  <div id="not-found" style="display:none" class="not-found">
+    <div class="nf-icon">🔍</div>
+    <h2>Report Not Found</h2>
+    <p>The call report you're looking for doesn't exist or the link is incorrect.<br>Please contact IT Admin: Abhishek Tiwari</p>
+  </div>
+
+  <!-- REPORT CONTENT -->
+  <div id="report-content" style="display:none">
+
+    <!-- SHARE SECTION (top) -->
+    <div class="share-section">
+      <h3>📤 Share This Report</h3>
+      <p>GM aur senior management ke saath share karein</p>
+      <div class="share-row">
+        <button class="shr-btn shr-wa" onclick="shareWhatsApp()">📱 WhatsApp</button>
+        <button class="shr-btn shr-copy" onclick="copyLink()" style="border:1.5px solid #d1d5db">🔗 Copy Link</button>
+        <button class="shr-btn shr-pdf" onclick="window.print()">📄 PDF / Print</button>
+      </div>
+    </div>
+
+    <!-- REPORT HEADER -->
+    <div class="report-header">
+      <div class="rh-tag">📋 Official IT Call Report – J. Kumar Infraprojects Ltd.</div>
+      <div class="rh-id" id="rh-id">CALL-XXXXXXXX</div>
+      <div class="rh-date" id="rh-date"></div>
+      <div class="rh-stats">
+        <div class="rhs"><div class="rhs-lbl">Status</div><div class="rhs-val" id="rh-status">—</div></div>
+        <div class="rhs"><div class="rhs-lbl">Priority</div><div class="rhs-val" id="rh-prio">—</div></div>
+        <div class="rhs"><div class="rhs-lbl">Department</div><div class="rhs-val" id="rh-dept">—</div></div>
+        <div class="rhs"><div class="rhs-lbl">Engineer</div><div class="rhs-val" id="rh-eng">—</div></div>
+      </div>
+    </div>
+
+    <!-- CALL DETAILS -->
+    <div class="sec">
+      <div class="sec-title">📞 Call Information</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-lbl">Call / Ticket ID</div><div class="info-val mono" id="d-callid">—</div></div>
+        <div class="info-item"><div class="info-lbl">Call Date</div><div class="info-val" id="d-date">—</div></div>
+        <div class="info-item"><div class="info-lbl">Time Received</div><div class="info-val" id="d-time-recv">—</div></div>
+        <div class="info-item"><div class="info-lbl">Time Closed</div><div class="info-val" id="d-time-close">—</div></div>
+        <div class="info-item"><div class="info-lbl">Employee Name</div><div class="info-val big" id="d-emp">—</div></div>
+        <div class="info-item"><div class="info-lbl">Mobile</div><div class="info-val" id="d-emp-phone">—</div></div>
+        <div class="info-item"><div class="info-lbl">Department</div><div class="info-val" id="d-dept">—</div></div>
+        <div class="info-item"><div class="info-lbl">Location / Site</div><div class="info-val" id="d-loc">—</div></div>
+        <div class="info-item"><div class="info-lbl">Asset Tag</div><div class="info-val mono" id="d-asset">—</div></div>
+        <div class="info-item"><div class="info-lbl">Category</div><div class="info-val" id="d-cat">—</div></div>
+        <div class="info-item"><div class="info-lbl">Priority</div><div class="info-val" id="d-prio">—</div></div>
+        <div class="info-item"><div class="info-lbl">Time Taken</div><div class="info-val" id="d-time-taken">—</div></div>
+      </div>
+    </div>
+
+    <!-- PROBLEM & SOLUTION -->
+    <div class="sec">
+      <div class="sec-title">🔍 Problem Analysis & Solution</div>
+      <div class="prob-box">
+        <div class="pb-lbl">🔴 Problem Reported</div>
+        <div class="pb-val" id="d-prob-title" style="font-weight:700;margin-bottom:6px"></div>
+        <div class="pb-val" id="d-prob-desc"></div>
+      </div>
+      <div class="cause-box" id="cause-box">
+        <div class="pb-lbl">⚡ Root Cause</div>
+        <div class="pb-val" id="d-root-cause"></div>
+      </div>
+      <div class="sol-box">
+        <div class="pb-lbl">✅ Solution / Action Taken</div>
+        <div class="pb-val" id="d-solution"></div>
+      </div>
+      <div class="info-grid" style="margin-top:12px">
+        <div class="info-item"><div class="info-lbl">Resolution Method</div><div class="info-val" id="d-res-method">—</div></div>
+        <div class="info-item"><div class="info-lbl">Call Status</div><div class="info-val" id="d-status-badge">—</div></div>
+      </div>
+      <div id="remarks-wrap" style="margin-top:12px;display:none">
+        <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:9px;padding:12px 14px">
+          <div style="font-size:10px;font-weight:700;color:#0369a1;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px">📝 Additional Remarks / Notes</div>
+          <div style="font-size:13px;color:#0c4a6e;line-height:1.6" id="d-remarks"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARTS SECTION -->
+    <div class="sec" id="parts-sec" style="display:none">
+      <div class="sec-title">🔩 Parts / Components Used</div>
+      <table class="parts-tbl" id="parts-table">
+        <thead><tr><th>#</th><th>Part / Component</th><th>Qty</th><th>Action</th><th>Notes</th></tr></thead>
+        <tbody id="parts-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- PURCHASE SECTION -->
+    <div class="sec" id="purchase-sec" style="display:none">
+      <div class="sec-title">🛒 Purchase Details</div>
+      <div class="pur-card">
+        <div class="pc-hd">💰 Purchase / PR Information</div>
+        <div class="pur-grid">
+          <div class="pur-item"><div class="pur-lbl">Purchase Type</div><div class="pur-val" id="d-pur-type">—</div></div>
+          <div class="pur-item"><div class="pur-lbl">PR / Bill Number</div><div class="pur-val mono" id="d-pr-no" style="font-family:var(--mono)">—</div></div>
+          <div class="pur-item"><div class="pur-lbl">Amount</div><div class="pur-amount" id="d-amount">—</div></div>
+          <div class="pur-item"><div class="pur-lbl">Vendor / Supplier</div><div class="pur-val" id="d-vendor">—</div></div>
+          <div class="pur-item"><div class="pur-lbl">Purchase Date</div><div class="pur-val" id="d-pur-date">—</div></div>
+          <div class="pur-item"><div class="pur-lbl">Approved By</div><div class="pur-val" id="d-approved-by">—</div></div>
+        </div>
+        <div id="pur-remarks-wrap" style="margin-top:10px;display:none">
+          <div class="pur-lbl">Remarks</div>
+          <div style="font-size:12px;color:#78350f;margin-top:3px" id="d-pur-remarks"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENDOR SECTION -->
+    <div class="sec" id="vendor-sec" style="display:none">
+      <div class="sec-title">🏢 Vendor / Third-Party Details</div>
+      <div class="info-grid">
+        <div class="info-item"><div class="info-lbl">Vendor Company</div><div class="info-val" id="d-vend-co">—</div></div>
+        <div class="info-item"><div class="info-lbl">Contact</div><div class="info-val" id="d-vend-ph">—</div></div>
+        <div class="info-item"><div class="info-lbl">Service Type</div><div class="info-val" id="d-vend-type">—</div></div>
+        <div class="info-item"><div class="info-lbl">Vendor Job No.</div><div class="info-val mono" id="d-vend-job">—</div></div>
+      </div>
+    </div>
+
+    <!-- IMAGES -->
+    <div class="sec" id="images-sec" style="display:none">
+      <div class="sec-title">📷 Call Photos / Evidence</div>
+      <div class="img-grid" id="images-grid"></div>
+    </div>
+
+    <!-- ENGINEER SIGN-OFF -->
+    <div class="sec">
+      <div class="sec-title">👷 Engineer Sign-off</div>
+      <div class="sign-bar">
+        <div class="sign-info">
+          <div class="sign-name" id="d-eng-name">—</div>
+          <div class="sign-sub" id="d-eng-sub">IT Engineer – J. Kumar Infraprojects</div>
+          <div id="d-final-comments" style="font-size:12px;color:#166534;margin-top:5px"></div>
+        </div>
+        <div class="conf-badge">✅ Report Verified & Submitted</div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--muted);text-align:right" id="d-submitted-at"></div>
+    </div>
+
+    <!-- SHARE BOTTOM -->
+    <div class="share-section">
+      <h3>📱 Share with GM / Management</h3>
+      <p>Is report ki link WhatsApp ya email ke through share karein</p>
+      <div class="share-row">
+        <button class="shr-btn shr-wa" onclick="shareWhatsApp()">📱 WhatsApp</button>
+        <button class="shr-btn shr-copy" onclick="copyLink()" style="border:1.5px solid #d1d5db">🔗 Copy Link</button>
+        <button class="shr-btn shr-pdf" onclick="window.print()">📄 PDF / Print</button>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:var(--muted)" id="report-url-display"></div>
+    </div>
+
+  </div><!-- /report-content -->
+</div><!-- /main -->
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="if(event.target===this)this.classList.remove('open')">
+  <button class="lb-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs, limit }
+  from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+
+const FB = {
+  apiKey:"AIzaSyD1NaEmIB9yBh7eoaxOAEV1jVbjE76LZa8",
+  authDomain:"jkumar-ithelpdesk.firebaseapp.com",
+  projectId:"jkumar-ithelpdesk",
+  storageBucket:"jkumar-ithelpdesk.firebasestorage.app",
+  messagingSenderId:"638863597956",
+  appId:"1:638863597956:web:506d8e62c98c29729c3dd1"
+};
+const app = initializeApp(FB);
+const db  = getFirestore(app);
+
+let reportData = null;
+
+// Get call ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const callId    = urlParams.get('id') || urlParams.get('call');
+
+if (!callId) {
+  document.getElementById('loading-wrap').style.display='none';
+  document.getElementById('not-found').style.display='block';
+} else {
+  loadReport(callId);
+}
+
+async function loadReport(id) {
+  try {
+    const q = query(collection(db,'call_reports'), where('callId','==',id), limit(1));
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      document.getElementById('loading-wrap').style.display='none';
+      document.getElementById('not-found').style.display='block';
+      return;
+    }
+    reportData = snap.docs[0].data();
+    renderReport(reportData);
+  } catch(e) {
+    document.getElementById('loading-wrap').style.display='none';
+    document.getElementById('not-found').innerHTML = `
+      <div class="nf-icon">⚠️</div>
+      <h2>Error Loading Report</h2>
+      <p>${e.message}<br><br>Check your internet connection or Firestore rules.</p>`;
+    document.getElementById('not-found').style.display='block';
+  }
+}
+
+function set(id, val) { const e=document.getElementById(id); if(e&&val!==undefined&&val!==null&&val!=='') e.textContent=val; }
+function setHTML(id, html) { const e=document.getElementById(id); if(e) e.innerHTML=html; }
+function show(id) { const e=document.getElementById(id); if(e) e.style.display='block'; }
+
+function statusBadge(s) {
+  const map = {
+    Resolved:'s-resolved',
+    'Pending Parts':'s-pending',
+    'Pending Approval':'s-pending',
+    Escalated:'s-escalated',
+    'In Progress':'s-inprog'
+  };
+  const emoji = {Resolved:'✅','Pending Parts':'⏳','Pending Approval':'📋',Escalated:'🔺','In Progress':'🔄'};
+  return `<span class="status-badge ${map[s]||'s-inprog'}">${emoji[s]||'🔄'} ${s}</span>`;
+}
+function prioBadge(p) {
+  const c='p-'+(p||'low').toLowerCase();
+  return `<span class="prio-badge ${c}">${p}</span>`;
+}
+
+function renderReport(d) {
+  document.getElementById('loading-wrap').style.display='none';
+  document.getElementById('report-content').style.display='block';
+
+  // Update page title
+  document.title = `Call Report ${d.callId} – J. Kumar IT`;
+
+  // Header
+  set('rh-id',    d.callId);
+  set('rh-date',  `Date: ${d.callDate||'—'} | Submitted: ${d.submittedAtISO?new Date(d.submittedAtISO).toLocaleString('en-IN'):''}`);
+  setHTML('rh-status', statusBadge(d.callStatus));
+  setHTML('rh-prio',   prioBadge(d.priority));
+  set('rh-dept',  d.department||'—');
+  set('rh-eng',   d.engineerName||'—');
+
+  // Call Info
+  set('d-callid',     d.linkedTicketId||d.callId);
+  set('d-date',       d.callDate);
+  set('d-time-recv',  d.timeReceived||'—');
+  set('d-time-close', d.timeClosed||'—');
+  set('d-emp',        d.employeeName);
+  set('d-emp-phone',  d.employeePhone||'—');
+  set('d-dept',       d.department);
+  set('d-loc',        d.location);
+  set('d-asset',      d.assetTag||'—');
+  set('d-cat',        d.category);
+  set('d-time-taken', d.timeTaken||'—');
+
+  setHTML('d-prio',   prioBadge(d.priority));
+
+  // Problem & Solution
+  set('d-prob-title', d.problemTitle);
+  set('d-prob-desc',  d.problemDesc);
+  set('d-solution',   d.solution);
+  if(d.rootCause) { set('d-root-cause',d.rootCause); } else { document.getElementById('cause-box').style.display='none'; }
+  if(d.remarks) { set('d-remarks',d.remarks); show('remarks-wrap'); }
+  set('d-res-method', d.resolutionMethod||'—');
+  setHTML('d-status-badge', statusBadge(d.callStatus));
+
+  // Parts
+  if(d.partsUsed && d.parts && d.parts.length) {
+    show('parts-sec');
+    const tbody=document.getElementById('parts-tbody');
+    tbody.innerHTML=d.parts.map((p,i)=>`<tr>
+      <td>${i+1}</td>
+      <td><strong>${p.name}</strong></td>
+      <td>${p.qty}</td>
+      <td><span style="background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700">${p.type}</span></td>
+      <td style="color:var(--muted)">${p.notes||'—'}</td>
+    </tr>`).join('');
+  }
+
+  // Purchase
+  if(d.purchaseDone) {
+    show('purchase-sec');
+    set('d-pur-type',   d.purchaseType||'—');
+    set('d-pr-no',      d.prNumber||'—');
+    set('d-amount',     d.amount ? '₹'+parseFloat(d.amount).toLocaleString('en-IN') : '—');
+    set('d-vendor',     d.vendorName||'—');
+    set('d-pur-date',   d.purchaseDate||'—');
+    set('d-approved-by',d.approvedBy||'—');
+    if(d.purchaseRemarks){ set('d-pur-remarks',d.purchaseRemarks); show('pur-remarks-wrap'); }
+  }
+
+  // Vendor
+  if(d.vendorInvolved) {
+    show('vendor-sec');
+    set('d-vend-co',   d.vendorCompany||'—');
+    set('d-vend-ph',   d.vendorContact||'—');
+    set('d-vend-type', d.vendorServiceType||'—');
+    set('d-vend-job',  d.vendorJobNo||'—');
+  }
+
+  // Images
+  if(d.images && d.images.length) {
+    show('images-sec');
+    const grid=document.getElementById('images-grid');
+    grid.innerHTML=d.images.map(img=>{
+      const isImg=img.type&&img.type.startsWith('image/');
+      return`<div class="img-card" onclick="openLightbox('${img.url}')">
+        ${isImg?`<img src="${img.url}" alt="${img.name}" loading="lazy">`
+        :`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;background:#f3f4f6;gap:6px">
+          <span style="font-size:32px">📄</span>
+          <span style="font-size:9px;color:var(--muted);text-align:center;padding:0 6px">${img.name}</span>
+          <a href="${img.url}" target="_blank" style="font-size:10px;color:var(--blue);font-weight:700">Open</a>
+        </div>`}
+        <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:#fff;font-size:9px;padding:3px 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${img.name}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Engineer sign-off
+  set('d-eng-name', d.engineerName||'—');
+  set('d-eng-sub',  `${d.engineerEmpId||''} | IT Department – J. Kumar Infraprojects`);
+  if(d.finalComments) set('d-final-comments', '💬 ' + d.finalComments);
+  const submittedAt = d.submittedAtISO ? new Date(d.submittedAtISO).toLocaleString('en-IN',{weekday:'long',day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '';
+  set('d-submitted-at', 'Submitted on: '+submittedAt);
+
+  // Report URL
+  const url = window.location.href;
+  document.getElementById('report-url-display').textContent = url;
+}
+
+window.openLightbox = function(url) {
+  document.getElementById('lb-img').src=url;
+  document.getElementById('lightbox').classList.add('open');
+};
+
+window.shareWhatsApp = function() {
+  const url=window.location.href;
+  const d=reportData||{};
+  const msg=encodeURIComponent(
+    `📋 *J. Kumar Infraprojects – IT Call Report*\n\n`+
+    `🔖 *Call ID:* ${d.callId||'—'}\n`+
+    `📅 *Date:* ${d.callDate||'—'}\n`+
+    `👤 *Employee:* ${d.employeeName||'—'}\n`+
+    `🏢 *Dept:* ${d.department||'—'}\n`+
+    `📍 *Location:* ${d.location||'—'}\n`+
+    `🔧 *Issue:* ${d.problemTitle||'—'}\n`+
+    `✅ *Status:* ${d.callStatus||'—'}\n`+
+    `👷 *Engineer:* ${d.engineerName||'—'}\n`+
+    (d.purchaseDone?`💰 *Purchase:* ${d.purchaseType||'—'} ${d.amount?'₹'+d.amount:''}\n`:'')+
+    `\n🔗 *Full Report:* ${url}`
+  );
+  window.open('https://wa.me/?text='+msg,'_blank');
+};
+
+window.copyLink = function() {
+  navigator.clipboard.writeText(window.location.href).then(()=>{
+    const btn=event.target; const orig=btn.textContent;
+    btn.textContent='✅ Copied!'; btn.style.background='#f0fdf4';
+    setTimeout(()=>{btn.textContent=orig;btn.style.background='';},2500);
+  });
+};
+</script>
+</body>
+</html>

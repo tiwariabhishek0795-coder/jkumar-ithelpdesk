@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J. Kumar Infraprojects – IT Support Portal</title>
+<!-- FIX #6: J.Kumar favicon SVG inline as data URI -->
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--white:#ffffff;--s1:#fafbfc;
+  --gold:#c8960a;--gold2:#e8a020;--gold3:#f5c842;
+  --dark:#1a1a2e;--text:#1e2235;--muted:#6b7280;--dim:#9ca3af;
+  --bdr:#e5e7eb;--bdr2:#d1d5db;
+  --green:#16a34a;--orange:#d97706;--blue:#2563eb;--red:#dc2626;
+  --font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;font-size:14px}
+.header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(0,0,0,.3);position:sticky;top:0;z-index:100;}
+.brand{display:flex;align-items:center;gap:12px}
+.logo-box{width:46px;height:46px;border-radius:9px;overflow:hidden;border:2px solid rgba(232,160,32,.4);flex-shrink:0;background:#000;}
+.b-name{font-size:14px;font-weight:800;color:#f5c842;letter-spacing:.2px;}
+.b-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.portal-badge{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#000;font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;letter-spacing:.4px;}
+/* NOTIFICATION BELL */
+.notif-wrap{position:relative}
+.notif-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#fff;transition:.2s;}
+.notif-btn:hover{background:rgba(255,255,255,.2)}
+.notif-dot{position:absolute;top:-3px;right:-3px;background:#ef4444;color:#fff;border-radius:50%;width:17px;height:17px;font-size:9px;font-weight:700;display:none;align-items:center;justify-content:center;}
+#notif-panel{position:fixed;top:68px;right:12px;width:300px;background:#fff;border:1px solid var(--bdr);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.15);z-index:120;display:none;max-height:380px;overflow-y:auto;}
+#notif-panel.show{display:block}
+.np-head{padding:12px 14px;border-bottom:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;}
+.np-item{padding:10px 14px;border-bottom:1px solid var(--bdr);cursor:pointer;transition:.15s;}
+.np-item:hover{background:#f9fafb}.np-item:last-child{border-bottom:none}
+.np-item.unread{background:#fffbeb}
+.np-msg{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.np-time{font-size:10px;color:var(--muted)}
+.np-empty{text-align:center;padding:20px;color:var(--muted);font-size:11px}
+/* MAIN */
+.main{max-width:660px;margin:0 auto;padding:22px 14px 60px}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--dark),#16213e);border-radius:14px;padding:24px 20px;margin-bottom:18px;border:1px solid rgba(232,160,32,.2);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(232,160,32,.15),transparent 70%);}
+.hero h1{font-size:20px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.3}
+.hero h1 span{color:var(--gold3)}
+.hero p{font-size:12px;color:rgba(255,255,255,.5);line-height:1.6}
+.hero-stats{display:flex;gap:12px;margin-top:16px}
+.hs{flex:1;background:rgba(255,255,255,.05);border-radius:9px;padding:10px;text-align:center;border:1px solid rgba(255,255,255,.08);}
+.hs-num{font-size:20px;font-weight:800;color:var(--gold3);font-family:var(--mono)}
+.hs-lbl{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+/* CARD */
+.card{background:var(--white);border-radius:13px;padding:20px;margin-bottom:14px;border:1px solid var(--bdr);box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:7px;text-transform:uppercase;letter-spacing:.5px}
+/* FORM */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.fg input,.fg select,.fg textarea{background:#f9fafb;border:1.5px solid var(--bdr2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:10px 12px;outline:none;transition:.2s;width:100%;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold2);background:#fff;box-shadow:0 0 0 3px rgba(232,160,32,.1);}
+.fg textarea{resize:vertical;min-height:88px;line-height:1.6}
+/* PRIORITY */
+.prio-row{display:flex;gap:7px;flex-wrap:wrap}
+.pb{flex:1;min-width:76px;padding:8px 6px;border-radius:8px;border:1.5px solid var(--bdr2);background:#f9fafb;color:var(--muted);cursor:pointer;font-family:var(--font);font-size:11px;font-weight:600;transition:.2s;text-align:center;}
+.pb.low{background:#f0fdf4;border-color:#16a34a;color:#16a34a}
+.pb.med{background:#fffbeb;border-color:#d97706;color:#d97706}
+.pb.hi{background:#fef2f2;border-color:#dc2626;color:#dc2626}
+.pb.crit{background:#fff1f2;border-color:#9f1239;color:#9f1239;font-weight:800}
+/* SUBMIT */
+.submit-btn{width:100%;padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#f5c842;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,26,46,.35)}
+.submit-btn:disabled{opacity:.5;transform:none;cursor:not-allowed}
+/* SUCCESS */
+.success-card{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #16a34a;border-radius:13px;padding:22px;text-align:center;display:none;margin-bottom:14px;}
+.sc-icon{font-size:36px;margin-bottom:8px}
+.sc-title{font-size:15px;font-weight:800;color:#15803d;margin-bottom:5px}
+.sc-tid{font-family:var(--mono);font-size:11px;color:#166534;background:#bbf7d0;padding:4px 12px;border-radius:20px;display:inline-block;margin-top:3px}
+.sc-sub{font-size:11px;color:#166534;margin-top:7px;line-height:1.5}
+/* TICKET ITEMS */
+.t-item{border:1.5px solid var(--bdr);border-radius:10px;padding:12px 14px;margin-bottom:8px;background:#fafbfc;transition:.25s;cursor:pointer;}
+.t-item:hover{border-color:var(--gold2);background:#fff;transform:translateY(-1px)}
+/* FIX #3: In Progress blink */
+.t-item.blink-prog{animation:blinkBorder 2.2s ease-in-out infinite;}
+@keyframes blinkBorder{0%,100%{border-color:#d97706;box-shadow:none}60%{border-color:#f59e0b;box-shadow:0 0 0 4px rgba(217,119,6,.12)}}
+.t-id-row{font-family:var(--mono);font-size:9px;color:var(--dim);margin-bottom:3px}
+.t-title-txt{font-weight:700;font-size:13px;color:var(--text);margin-bottom:5px}
+.t-meta-row{font-size:10px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.t-foot{display:flex;align-items:center;justify-content:space-between;margin-top:9px;flex-wrap:wrap;gap:6px}
+.badges-row{display:flex;gap:5px;flex-wrap:wrap}
+.tbadge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.b-open{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.b-assigned{background:#faf5ff;color:#7c3aed;border:1px solid #ddd6fe}
+.b-prog{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.b-hold{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.b-res{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.b-closed{background:#f3f4f6;color:#6b7280;border:1px solid #d1d5db}
+.b-Low{background:#f0fdf4;color:#16a34a}.b-Medium{background:#fffbeb;color:#d97706}
+.b-High{background:#fef2f2;color:#dc2626}.b-Critical{background:#fff1f2;color:#9f1239}
+/* TABS */
+.nav-tabs{display:flex;background:#fff;border-radius:11px;padding:4px;margin-bottom:18px;border:1px solid var(--bdr);gap:3px}
+.ntab{flex:1;padding:8px;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-family:var(--font);font-size:12px;font-weight:600;transition:.2s;text-align:center;}
+.ntab.on{background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#f5c842}
+.empty-state{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+/* DETAIL MODAL */
+#detail-modal{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;}
+#detail-modal.open{display:flex}
+.detail-box{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;}
+.detail-row{display:flex;gap:6px;margin-bottom:6px;font-size:12px;}
+.d-lbl{color:var(--muted);width:100px;flex-shrink:0;font-weight:600}
+.tl-item{display:flex;gap:12px;margin-bottom:12px}
+.tl-dot{width:9px;height:9px;border-radius:50%;background:var(--gold2);margin-top:3px;flex-shrink:0}
+.tl-msg{font-size:12px;line-height:1.5}
+.tl-time{font-size:10px;color:var(--muted);font-family:var(--mono)}
+/* RATING MODAL */
+#rating-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:16px;}
+#rating-modal.open{display:flex}
+.rating-box{background:#fff;border-radius:18px;padding:28px 24px;width:100%;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.rating-box h3{font-size:17px;font-weight:800;color:var(--text);margin-bottom:6px}
+.rating-box p{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.stars-row{display:flex;justify-content:center;gap:6px;margin-bottom:16px}
+.star{font-size:32px;cursor:pointer;transition:.2s;opacity:.35}
+.star.active{opacity:1;transform:scale(1.1)}
+.rating-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:12px;padding:0 2px}
+.r-textarea{width:100%;border:1.5px solid var(--bdr2);border-radius:8px;padding:10px 12px;font-family:var(--font);font-size:12px;resize:vertical;min-height:65px;outline:none;color:var(--text);}
+.r-textarea:focus{border-color:var(--gold2)}
+.r-btns{display:flex;gap:8px;margin-top:14px}
+.r-submit{flex:1;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#f5c842;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;}
+.r-skip{padding:11px 16px;border-radius:9px;border:1px solid var(--bdr2);background:transparent;color:var(--muted);font-family:var(--font);font-size:12px;cursor:pointer;}
+.footer{text-align:center;padding:16px;font-size:11px;color:var(--muted)}
+.footer strong{color:var(--gold2)}
+@media(max-width:480px){.fgrid{grid-template-columns:1fr}.fg.full{grid-column:1}.prio-row{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">
+    <div class="logo-box">
+      <svg viewBox="0 0 46 46" fill="none" style="width:46px;height:46px">
+        <rect width="46" height="46" fill="#000"/>
+        <circle cx="23" cy="18" r="13" fill="#F5C842"/>
+        <rect x="6" y="27" width="34" height="14" fill="#C8960A"/>
+        <polygon points="23,8 34,28 12,28" fill="#C0392B"/>
+        <text x="23" y="24" font-family="serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">J</text>
+        <text x="23" y="38" font-family="sans-serif" font-size="6" font-weight="800" fill="white" text-anchor="middle">J. Kumar</text>
+      </svg>
+    </div>
+    <div><div class="b-name">J. Kumar Infraprojects Ltd.</div><div class="b-sub">Employee IT Support Portal</div></div>
+  </div>
+  <div class="hdr-right">
+    <!-- FIX #4: Notification Bell -->
+    <div class="notif-wrap">
+      <div class="notif-btn" id="notif-btn" onclick="toggleNotif()">🔔
+        <div class="notif-dot" id="notif-dot">0</div>
+      </div>
+    </div>
+    <div class="portal-badge">🎫 Employee Portal</div>
+  </div>
+</div>
+
+<!-- Notification Panel -->
+<div id="notif-panel">
+  <div class="np-head">🔔 Notifications <button onclick="markAllRead()" style="font-size:10px;color:var(--gold2);background:none;border:none;cursor:pointer;font-weight:700">Mark read</button></div>
+  <div id="notif-list"><div class="np-empty">No notifications yet</div></div>
+</div>
+
+<div class="main">
+  <div class="hero">
+    <h1>IT Support <span>Made Simple</span></h1>
+    <p>Submit your request and track status in real time. Notifications alert you on every update.</p>
+    <div class="hero-stats">
+      <div class="hs"><div class="hs-num" id="h-total">0</div><div class="hs-lbl">My Tickets</div></div>
+      <div class="hs"><div class="hs-num" id="h-open">0</div><div class="hs-lbl">Open</div></div>
+      <div class="hs"><div class="hs-num" id="h-prog" style="color:#fbbf24">0</div><div class="hs-lbl">In Progress</div></div>
+      <div class="hs"><div class="hs-num" id="h-res" style="color:#4ade80">0</div><div class="hs-lbl">Resolved</div></div>
+    </div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="ntab on" onclick="switchTab('new',this)">➕ Raise Ticket</button>
+    <button class="ntab" onclick="switchTab('my',this)">📋 My Tickets</button>
+  </div>
+
+  <div class="success-card" id="success-card">
+    <div class="sc-icon">✅</div>
+    <div class="sc-title">Ticket Submitted!</div>
+    <div id="sc-tid" class="sc-tid">TKT-XXXXX</div>
+    <div class="sc-sub">IT Team notified. You'll get in-app notification on every status update.</div>
+  </div>
+
+  <!-- NEW TICKET -->
+  <div id="tab-new">
+    <div class="card">
+      <div class="card-title">👤 Your Details</div>
+      <div class="fgrid">
+        <div class="fg"><label>Full Name *</label><input id="emp-name" type="text" placeholder="e.g. Rahul Sharma"></div>
+        <div class="fg"><label>Employee ID</label><input id="emp-id" type="text" placeholder="e.g. JKIL-1042"></div>
+        <div class="fg"><label>Department *</label>
+          <select id="emp-dept">
+            <option value="">Select Department</option>
+            <option>Site Engineering</option><option>Civil Works</option><option>Mechanical</option>
+            <option>Electrical</option><option>Accounts & Finance</option><option>HR & Admin</option>
+            <option>IT Department</option><option>Procurement</option><option>Management</option><option>Other</option>
+          </select>
+        </div>
+        <!-- FIX #2: Mobile number is required field -->
+        <div class="fg"><label>📱 Mobile Number *</label><input id="emp-phone" type="tel" placeholder="9876543210" maxlength="15"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔧 Issue Details</div>
+      <div class="fgrid">
+        <div class="fg full"><label>Issue Category *</label>
+          <select id="emp-cat">
+            <option value="">Select Category</option>
+            <option>Hardware – Laptop / Desktop</option><option>Hardware – Printer / Scanner</option>
+            <option>Hardware – UPS / Power</option><option>Software – MS Office</option>
+            <option>Software – ERP / SAP</option><option>Software – AutoCAD / Design</option>
+            <option>Network – Internet / WiFi</option><option>Network – LAN / Cable</option>
+            <option>Network – VPN</option><option>Email – Outlook / Access</option>
+            <option>Account – Password Reset</option><option>New Device / Setup</option>
+            <option>Data / Backup</option><option>Security / Virus</option>
+            <option>CCTV / Surveillance</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Issue Title *</label><input id="emp-title" type="text" placeholder="Short description"></div>
+        <div class="fg full"><label>Detailed Description *</label><textarea id="emp-desc" placeholder="What happened? When? Error messages? What did you try?"></textarea></div>
+        <div class="fg full">
+          <label>Priority *</label>
+          <div class="prio-row">
+            <button class="pb low" onclick="setPrio('Low',this)">🟢 Low</button>
+            <button class="pb" onclick="setPrio('Medium',this)">🟡 Medium</button>
+            <button class="pb" onclick="setPrio('High',this)">🔴 High</button>
+            <button class="pb" onclick="setPrio('Critical',this)">🚨 Critical</button>
+          </div>
+          <input type="hidden" id="emp-prio" value="Low">
+        </div>
+        <div class="fg full"><label>Location / Site</label><input id="emp-loc" type="text" placeholder="e.g. Head Office / Site Mumbai"></div>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitTicket()">
+        <span>🚀</span> <span id="submit-txt">Submit Support Ticket</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MY TICKETS -->
+  <div id="tab-my" style="display:none">
+    <div class="card">
+      <div class="card-title">📋 My Submitted Tickets</div>
+      <div id="my-list"><div class="empty-state">📭<br><br>No tickets yet. Raise your first ticket!</div></div>
+    </div>
+  </div>
+
+  <div class="footer">&copy; 2025 J. Kumar Infraprojects Limited · IT Helpdesk Portal · Developed by <strong>Abhishek Tiwari</strong> | IT Professional</div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="detail-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="detail-box">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+      <div><div id="dm-id" style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:3px"></div><h2 id="dm-title" style="font-size:17px;font-weight:800"></h2></div>
+      <button onclick="document.getElementById('detail-modal').classList.remove('open')" style="background:#f3f4f6;border:none;border-radius:7px;width:30px;height:30px;cursor:pointer;font-size:15px">✕</button>
+    </div>
+    <div id="dm-badges" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px"></div>
+    <div id="dm-details"></div>
+    <hr style="border:none;border-top:1px solid var(--bdr);margin:14px 0">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">📜 Activity Timeline</div>
+    <div id="dm-timeline"></div>
+    <div id="dm-rating-section"></div>
+  </div>
+</div>
+
+<!-- FIX #7: RATING MODAL -->
+<div id="rating-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="rating-box">
+    <div style="font-size:36px;margin-bottom:8px">⭐</div>
+    <h3>Rate This Resolution</h3>
+    <p id="r-ticket-name">How satisfied are you with how this was resolved?</p>
+    <div class="stars-row" id="stars-row">
+      <span class="star" onclick="setRating(1)">⭐</span>
+      <span class="star" onclick="setRating(2)">⭐</span>
+      <span class="star" onclick="setRating(3)">⭐</span>
+      <span class="star" onclick="setRating(4)">⭐</span>
+      <span class="star" onclick="setRating(5)">⭐</span>
+    </div>
+    <div class="rating-labels"><span>😞 Poor</span><span>😐 OK</span><span>😄 Excellent</span></div>
+    <textarea class="r-textarea" id="r-feedback" placeholder="Optional feedback about the engineer or resolution..."></textarea>
+    <div class="r-btns">
+      <button class="r-skip" onclick="document.getElementById('rating-modal').classList.remove('open')">Skip</button>
+      <button class="r-submit" onclick="submitRating()">✅ Submit Rating</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, doc, updateDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:"AIzaSyD1NaEmIB9yBh7eoaxOAEV1jVbjE76LZa8",
+  authDomain:"jkumar-ithelpdesk.firebaseapp.com",
+  projectId:"jkumar-ithelpdesk",
+  storageBucket:"jkumar-ithelpdesk.firebasestorage.app",
+  messagingSenderId:"638863597956",
+  appId:"1:638863597956:web:506d8e62c98c29729c3dd1"
+};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const col=collection(db,"tickets");
+
+let selPrio='Low', allT=[], notifs=JSON.parse(localStorage.getItem('jk_notifs')||'[]');
+let ratingTicketId=null, ratingVal=0;
+let myName=localStorage.getItem('jk_emp_name')||'';
+
+const q=query(col,orderBy("createdAt","desc"));
+onSnapshot(q, snap => {
+  const prev=[...allT];
+  allT=snap.docs.map(d=>({fbId:d.id,...d.data()}));
+  // Detect status changes → notifications
+  if(prev.length && myName) {
+    allT.forEach(t => {
+      if((t.name||t.empName||'')!==myName) return;
+      const old=prev.find(p=>p.fbId===t.fbId);
+      if(old && old.status!==t.status) {
+        pushNotif(`Ticket ${t.id||t.ticketId}: "${old.status}" → "${t.status}"`, t.title||'');
+        // Auto rating prompt on resolve
+        if(t.status==='Resolved'&&!t.rating) setTimeout(()=>showRating(t),1800);
+      }
+    });
+  }
+  updateStats();
+  if(document.getElementById('tab-my').style.display!=='none') renderMyTickets();
+});
+
+function pushNotif(msg,title){
+  notifs.unshift({msg,title,time:new Date().toISOString(),read:false});
+  if(notifs.length>30) notifs.pop();
+  localStorage.setItem('jk_notifs',JSON.stringify(notifs));
+  renderNotifs();
+}
+function renderNotifs(){
+  const unread=notifs.filter(n=>!n.read).length;
+  const dot=document.getElementById('notif-dot');
+  dot.style.display=unread?'flex':'none'; dot.textContent=unread;
+  const list=document.getElementById('notif-list');
+  list.innerHTML=notifs.length?notifs.map((n,i)=>`
+    <div class="np-item ${n.read?'':'unread'}" onclick="readNotif(${i})">
+      <div class="np-msg">🔔 ${n.msg}</div>
+      <div class="np-time">${n.title} · ${new Date(n.time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</div>
+    </div>`).join(''):'<div class="np-empty">No notifications</div>';
+}
+window.toggleNotif=()=>document.getElementById('notif-panel').classList.toggle('show');
+window.markAllRead=()=>{notifs.forEach(n=>n.read=true);localStorage.setItem('jk_notifs',JSON.stringify(notifs));renderNotifs();};
+window.readNotif=(i)=>{notifs[i].read=true;localStorage.setItem('jk_notifs',JSON.stringify(notifs));renderNotifs();};
+document.addEventListener('click',e=>{const p=document.getElementById('notif-panel'),b=document.getElementById('notif-btn');if(!p.contains(e.target)&&!b.contains(e.target))p.classList.remove('show');});
+renderNotifs();
+
+function fmtDate(v){if(!v)return'—';const d=v?.toDate?v.toDate():new Date(v);return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+function scBadge(s){return{Open:'b-open',Assigned:'b-assigned','In Progress':'b-prog','On Hold':'b-hold',Resolved:'b-res',Closed:'b-closed'}[s]||'b-open';}
+
+window.switchTab=(t,el)=>{document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.getElementById('tab-new').style.display=t==='new'?'block':'none';document.getElementById('tab-my').style.display=t==='my'?'block':'none';if(t==='my')renderMyTickets();};
+window.setPrio=(p,el)=>{selPrio=p;document.querySelectorAll('.pb').forEach(b=>b.className='pb');el.classList.add({Low:'low',Medium:'med',High:'hi',Critical:'crit'}[p]);document.getElementById('emp-prio').value=p;};
+
+window.submitTicket=async()=>{
+  const name=document.getElementById('emp-name').value.trim();
+  const dept=document.getElementById('emp-dept').value;
+  const cat=document.getElementById('emp-cat').value;
+  const title=document.getElementById('emp-title').value.trim();
+  const desc=document.getElementById('emp-desc').value.trim();
+  const phone=document.getElementById('emp-phone').value.trim();
+  if(!name||!dept||!cat||!title||!desc){alert('⚠️ Please fill all required (*) fields');return;}
+  if(!phone){alert('⚠️ Mobile number is required');return;}
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;document.getElementById('submit-txt').textContent='Submitting...';
+  const tid='TKT-'+Date.now().toString().slice(-8);
+  const now=new Date().toISOString();
+  try{
+    await addDoc(col,{
+      id:tid,ticketId:tid,
+      name,empName:name,empId:document.getElementById('emp-id').value.trim(),
+      dept,phone,     // ✅ Mobile stored
+      cat,category:cat,
+      title,desc,description:desc,
+      prio:selPrio,priority:selPrio,
+      loc:document.getElementById('emp-loc').value.trim(),
+      status:'Open',created:now,updated:now,
+      createdAt:serverTimestamp(),updatedAt:serverTimestamp(),
+      assignedTo:null,assignedName:null,rating:null,ratingFeedback:null,
+      timeline:[{action:'Ticket Created',by:name,at:now,note:`${cat} | ${selPrio}`}],
+      comments:[],
+      // ✅ Ready for EmailJS/SMS notification integration
+      notifyPhone:phone,notifyEmail:''
+    });
+    myName=name;localStorage.setItem('jk_emp_name',name);
+    document.getElementById('sc-tid').textContent=tid;
+    document.getElementById('success-card').style.display='block';
+    document.getElementById('success-card').scrollIntoView({behavior:'smooth'});
+    ['emp-name','emp-id','emp-title','emp-desc','emp-phone','emp-loc'].forEach(x=>document.getElementById(x).value='');
+    document.getElementById('emp-dept').value='';document.getElementById('emp-cat').value='';
+    document.querySelectorAll('.pb').forEach(b=>b.className='pb');document.querySelector('.pb').classList.add('low');
+    document.getElementById('emp-prio').value='Low';selPrio='Low';
+    pushNotif(`Ticket ${tid} submitted successfully!`,title);
+    setTimeout(()=>document.getElementById('success-card').style.display='none',6000);
+  }catch(e){alert('❌ Failed to submit: '+e.message);}
+  finally{btn.disabled=false;document.getElementById('submit-txt').textContent='Submit Support Ticket';}
+};
+
+function renderMyTickets(){
+  const mine=myName?allT.filter(t=>(t.name||t.empName||'')===myName):allT;
+  const list=document.getElementById('my-list');
+  if(!mine.length){list.innerHTML='<div class="empty-state">📭<br><br>No tickets yet. Raise your first ticket!</div>';return;}
+  list.innerHTML=mine.map(t=>{
+    const blink=(t.status==='In Progress'||t.status==='Assigned')?' blink-prog':'';
+    const sc=scBadge(t.status);
+    return`<div class="t-item${blink}" onclick="openDetail('${t.fbId}')">
+      <div class="t-id-row">${t.id||t.ticketId} · ${t.cat||t.category||''}</div>
+      <div class="t-title-txt">${t.title}</div>
+      <div class="t-meta-row"><span>🏢 ${t.dept}</span>${t.assignedName?`<span>👨‍💻 ${t.assignedName}</span>`:''}<span>🕐 ${fmtDate(t.createdAt||t.created)}</span></div>
+      <div class="t-foot">
+        <div class="badges-row">
+          <span class="tbadge ${sc}">${t.status}</span>
+          <span class="tbadge b-${t.prio||t.priority||'Low'}">${t.prio||t.priority||'Low'}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${t.rating?`<span style="font-size:11px;color:var(--orange)">${'⭐'.repeat(t.rating)} ${t.rating}/5</span>`:''}
+          ${t.status==='Resolved'&&!t.rating?`<button onclick="event.stopPropagation();showRating(allT.find(x=>x.fbId==='${t.fbId}'))" style="font-size:10px;padding:3px 9px;border-radius:6px;border:1px solid #d97706;background:#fffbeb;color:#d97706;cursor:pointer;font-weight:700">⭐ Rate</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateStats(){
+  const mine=myName?allT.filter(t=>(t.name||t.empName||'')===myName):allT;
+  document.getElementById('h-total').textContent=mine.length;
+  document.getElementById('h-open').textContent=mine.filter(t=>t.status==='Open').length;
+  document.getElementById('h-prog').textContent=mine.filter(t=>t.status==='In Progress'||t.status==='Assigned').length;
+  document.getElementById('h-res').textContent=mine.filter(t=>t.status==='Resolved').length;
+}
+
+// Expose allT for inline onclick
+window.allT=allT;
+
+window.openDetail=(fbId)=>{
+  const t=allT.find(x=>x.fbId===fbId);if(!t)return;
+  document.getElementById('dm-id').textContent=t.id||t.ticketId||fbId;
+  document.getElementById('dm-title').textContent=t.title;
+  const sc=scBadge(t.status);
+  document.getElementById('dm-badges').innerHTML=`<span class="tbadge ${sc}">${t.status}</span><span class="tbadge b-${t.prio||t.priority||'Low'}">${t.prio||t.priority}</span>`;
+  document.getElementById('dm-details').innerHTML=`
+    <div class="detail-row"><span class="d-lbl">Category</span><span>${t.cat||t.category}</span></div>
+    <div class="detail-row"><span class="d-lbl">Department</span><span>${t.dept}</span></div>
+    <div class="detail-row"><span class="d-lbl">Mobile</span><span>${t.phone||'—'}</span></div>
+    <div class="detail-row"><span class="d-lbl">Location</span><span>${t.loc||t.location||'—'}</span></div>
+    <div class="detail-row"><span class="d-lbl">Assigned To</span><span>${t.assignedName||'Not yet assigned'}</span></div>
+    <div class="detail-row"><span class="d-lbl">Created</span><span>${fmtDate(t.createdAt||t.created)}</span></div>
+    <div style="margin-top:10px;font-size:12px;line-height:1.7;background:#f9fafb;border-radius:8px;padding:12px">${t.desc||t.description||''}</div>`;
+  const tl=[...(t.timeline||[]),...(t.comments||[]).map(c=>({...c,isComment:true}))].sort((a,b)=>new Date(a.at)-new Date(b.at));
+  document.getElementById('dm-timeline').innerHTML=tl.length?tl.map(item=>`
+    <div class="tl-item">
+      <div class="tl-dot" style="background:${item.isComment?'#3b82f6':'#d97706'}"></div>
+      <div><div class="tl-msg">${item.isComment?`💬 <strong>${item.by}:</strong> ${item.message}`:`<strong>${item.action}</strong>${item.note?' — '+item.note:''} <em style="color:var(--muted)">by ${item.by}</em>`}</div>
+      <div class="tl-time">${new Date(item.at).toLocaleString('en-IN')}</div></div>
+    </div>`).join(''):'<p style="font-size:12px;color:var(--muted)">No activity yet.</p>';
+  const rs=document.getElementById('dm-rating-section');
+  if(t.status==='Resolved'){
+    rs.innerHTML=t.rating?`<div style="margin-top:14px;padding:12px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px"><div style="font-size:12px;font-weight:700;margin-bottom:4px">Your Rating</div><div style="font-size:18px">${'⭐'.repeat(t.rating)}</div><div style="font-size:11px;color:var(--muted);margin-top:4px">${t.ratingFeedback||'No feedback'}</div></div>`
+    :`<div style="margin-top:14px;text-align:center"><button onclick="showRating(allT.find(x=>x.fbId==='${fbId}'))" style="padding:11px 22px;border-radius:9px;border:none;background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#f5c842;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer">⭐ Rate this Resolution</button></div>`;
+  } else rs.innerHTML='';
+  document.getElementById('detail-modal').classList.add('open');
+};
+
+window.showRating=(t)=>{
+  if(!t)return;
+  ratingTicketId=t.fbId;ratingVal=0;
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('active'));
+  document.getElementById('r-feedback').value='';
+  document.getElementById('r-ticket-name').textContent=`"${(t.title||'').slice(0,55)}"`;
+  document.getElementById('rating-modal').classList.add('open');
+  document.getElementById('detail-modal').classList.remove('open');
+};
+window.setRating=(v)=>{ratingVal=v;document.querySelectorAll('.star').forEach((s,i)=>s.classList.toggle('active',i<v));};
+window.submitRating=async()=>{
+  if(!ratingVal){alert('Please choose a star rating');return;}
+  try{
+    await updateDoc(doc(db,'tickets',ratingTicketId),{rating:ratingVal,ratingFeedback:document.getElementById('r-feedback').value.trim(),ratedAt:new Date().toISOString(),updatedAt:serverTimestamp()});
+    document.getElementById('rating-modal').classList.remove('open');
+    pushNotif(`You rated ticket ${ratingVal}⭐ – thank you!`,'Rating submitted');
+    alert(`✅ Rating saved! ${ratingVal} star${ratingVal>1?'s':''} — Thank you!`);
+  }catch(e){alert('Failed: '+e.message);}
+};
+</script>
+</body>
+</html>

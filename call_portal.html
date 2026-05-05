@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J. Kumar – Engineer Call Report</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--white:#fff;--dark:#1a1a2e;
+  --gold:#e8a020;--gold2:#f5c842;--gold3:#c8860a;
+  --blue:#2563eb;--green:#16a34a;--red:#dc2626;--orange:#d97706;
+  --text:#1e2235;--muted:#6b7280;--bdr:#e5e7eb;--bdr2:#d1d5db;
+  --font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:8px;overflow:hidden;border:2px solid rgba(232,160,32,.4);background:#000;flex-shrink:0}
+.bn{font-size:14px;font-weight:800;color:var(--gold2)}
+.bs{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
+.hdr-badge{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#000;
+  font-size:11px;font-weight:700;padding:5px 13px;border-radius:20px;letter-spacing:.4px}
+/* AUTH */
+#auth-wrap{min-height:calc(100vh - 74px);display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-box{background:var(--white);border-radius:18px;padding:36px;width:100%;max-width:400px;
+  box-shadow:0 8px 40px rgba(0,0,0,.12);border:1px solid var(--bdr)}
+.auth-box h2{font-size:20px;font-weight:800;color:var(--dark);margin-bottom:6px}
+.auth-box p{font-size:12px;color:var(--muted);margin-bottom:24px}
+/* MAIN */
+.main{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+/* PROGRESS BAR */
+.prog-wrap{background:var(--white);border-radius:12px;padding:16px 20px;margin-bottom:20px;
+  border:1px solid var(--bdr);box-shadow:0 1px 6px rgba(0,0,0,.05)}
+.prog-steps{display:flex;gap:0;position:relative}
+.prog-steps::before{content:'';position:absolute;top:14px;left:0;right:0;height:2px;
+  background:var(--bdr2);z-index:0}
+.prog-fill{position:absolute;top:14px;left:0;height:2px;background:var(--gold);
+  z-index:1;transition:width .4s ease}
+.pstep{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:2;cursor:pointer}
+.pstep-dot{width:28px;height:28px;border-radius:50%;background:var(--bdr2);color:var(--muted);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+  border:2px solid var(--bdr2);transition:.2s}
+.pstep.done .pstep-dot{background:var(--green);color:#fff;border-color:var(--green)}
+.pstep.active .pstep-dot{background:var(--gold);color:#000;border-color:var(--gold);
+  box-shadow:0 0 0 4px rgba(232,160,32,.2)}
+.pstep-lbl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.4px;text-align:center;line-height:1.3}
+.pstep.active .pstep-lbl,.pstep.done .pstep-lbl{color:var(--text)}
+/* CARD */
+.card{background:var(--white);border-radius:14px;padding:22px;margin-bottom:14px;
+  border:1px solid var(--bdr);box-shadow:0 1px 8px rgba(0,0,0,.05)}
+.card-hd{font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.5px}
+.badge-step{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#000;
+  font-size:10px;font-weight:800;padding:2px 9px;border-radius:20px}
+/* FORM */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.fg label .req{color:var(--red);margin-left:2px}
+.fg input,.fg select,.fg textarea{background:#f9fafb;border:1.5px solid var(--bdr2);
+  border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;
+  padding:10px 12px;outline:none;transition:.2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);
+  background:#fff;box-shadow:0 0 0 3px rgba(232,160,32,.1)}
+.fg textarea{resize:vertical;min-height:80px;line-height:1.6}
+.fg select option{background:#fff}
+/* PARTS TABLE */
+.parts-wrap{margin-bottom:14px}
+.parts-hd{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 40px;gap:8px;
+  padding:6px 10px;background:#f3f4f6;border-radius:8px 8px 0 0;
+  font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.part-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 40px;gap:8px;
+  padding:8px 10px;border:1px solid var(--bdr);border-top:none;align-items:center}
+.part-row:last-child{border-radius:0 0 8px 8px}
+.part-row input,.part-row select{background:#f9fafb;border:1px solid var(--bdr2);
+  border-radius:6px;padding:7px 9px;font-family:var(--font);font-size:12px;
+  color:var(--text);outline:none;width:100%}
+.part-row input:focus,.part-row select:focus{border-color:var(--gold);background:#fff}
+.del-part{width:30px;height:30px;border-radius:6px;border:1px solid rgba(220,38,38,.3);
+  background:rgba(220,38,38,.06);color:var(--red);cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;transition:.2s}
+.del-part:hover{background:rgba(220,38,38,.12)}
+.add-part-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;
+  border:1.5px dashed var(--gold);background:rgba(232,160,32,.04);color:var(--gold2);
+  font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:.2s;margin-top:8px}
+.add-part-btn:hover{background:rgba(232,160,32,.1)}
+/* IMAGE UPLOAD */
+.img-drop{border:2px dashed var(--bdr2);border-radius:10px;padding:28px;
+  text-align:center;cursor:pointer;transition:.2s;position:relative}
+.img-drop:hover,.img-drop.drag{border-color:var(--gold);background:rgba(232,160,32,.04)}
+.img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.img-drop .drop-icon{font-size:32px;margin-bottom:8px}
+.img-drop p{font-size:12px;color:var(--muted);line-height:1.5}
+.img-drop small{font-size:10px;color:var(--bdr2)}
+.img-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.img-thumb{position:relative;width:90px;height:90px;border-radius:8px;overflow:hidden;
+  border:2px solid var(--bdr)}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-thumb .rm-img{position:absolute;top:3px;right:3px;width:20px;height:20px;
+  border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;cursor:pointer;
+  font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1}
+/* NAVIGATION */
+.nav-btns{display:flex;gap:10px;margin-top:20px}
+.btn-next{flex:1;padding:13px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--dark),#0f3460);color:var(--gold2);
+  font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,26,46,.3)}
+.btn-next:disabled{opacity:.4;transform:none;cursor:not-allowed}
+.btn-prev{padding:13px 20px;border-radius:10px;border:1.5px solid var(--bdr2);
+  background:transparent;color:var(--muted);font-family:var(--font);font-size:13px;
+  font-weight:600;cursor:pointer;transition:.2s}
+.btn-prev:hover{border-color:var(--gold);color:var(--text)}
+/* SUMMARY */
+.sum-row{display:flex;gap:8px;margin-bottom:7px;font-size:12px;border-bottom:1px solid var(--bdr);padding-bottom:7px}
+.sum-row:last-child{border-bottom:none;padding-bottom:0}
+.sum-lbl{color:var(--muted);width:130px;flex-shrink:0;font-weight:600}
+.sum-val{color:var(--text);flex:1;word-break:break-word}
+.sum-val.code{font-family:var(--mono);color:var(--blue)}
+/* SUCCESS */
+.success-screen{text-align:center;padding:40px 20px}
+.suc-icon{font-size:64px;margin-bottom:16px}
+.suc-title{font-size:22px;font-weight:800;color:var(--dark);margin-bottom:8px}
+.suc-tid{font-family:var(--mono);font-size:13px;color:var(--blue);background:#eff6ff;
+  padding:6px 16px;border-radius:20px;display:inline-block;margin-bottom:12px;
+  border:1px solid #bfdbfe}
+.suc-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.wa-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;
+  border-radius:10px;border:none;background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff;font-family:var(--font);font-size:14px;font-weight:700;
+  cursor:pointer;text-decoration:none;transition:.2s;margin:6px}
+.wa-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(22,163,74,.3)}
+.copy-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;
+  border-radius:10px;border:1.5px solid var(--bdr2);background:#fff;
+  color:var(--text);font-family:var(--font);font-size:13px;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:.2s;margin:6px}
+.new-call-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;
+  border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold3));
+  color:#000;font-family:var(--font);font-size:14px;font-weight:700;
+  cursor:pointer;transition:.2s;margin:6px}
+/* LOADING */
+.loader{display:inline-flex;align-items:center;gap:8px}
+.spin{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;
+  padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:999;
+  transform:translateY(80px);opacity:0;transition:.3s;display:flex;align-items:center;gap:8px}
+.toast.show{transform:translateY(0);opacity:1}
+.footer{text-align:center;padding:16px;font-size:11px;color:var(--muted)}
+.footer strong{color:var(--gold2)}
+@media(max-width:520px){
+  .fgrid{grid-template-columns:1fr}.fg.full{grid-column:1}
+  .parts-hd,.part-row{grid-template-columns:2fr 1fr 80px 40px}
+  .parts-hd .ph-type,.part-row .pc-type{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="brand">
+    <div class="logo">
+      <svg viewBox="0 0 46 46" fill="none" style="width:46px;height:46px">
+        <rect width="46" height="46" fill="#000"/>
+        <circle cx="23" cy="18" r="13" fill="#F5C842"/>
+        <rect x="6" y="27" width="34" height="14" fill="#C8960A"/>
+        <polygon points="23,8 34,28 12,28" fill="#C0392B"/>
+        <text x="23" y="24" font-family="serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">J</text>
+        <text x="23" y="38" font-family="sans-serif" font-size="6" font-weight="800" fill="white" text-anchor="middle">J. Kumar</text>
+      </svg>
+    </div>
+    <div><div class="bn">J. Kumar Infraprojects Ltd.</div><div class="bs">Engineer Call Report System v2.0</div></div>
+  </div>
+  <div class="hdr-badge">📋 Call Report</div>
+</div>
+
+<!-- AUTH -->
+<div id="auth-wrap">
+  <div class="auth-box">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:40px">🔐</div>
+    </div>
+    <h2>Engineer Login</h2>
+    <p>Login karein apni assigned calls ki report submit karne ke liye</p>
+    <div class="fg" style="margin-bottom:13px"><label>Username<span class="req">*</span></label>
+      <input id="au-user" type="text" placeholder="e.g. eng01" autocomplete="username">
+    </div>
+    <div class="fg" style="margin-bottom:18px"><label>Password<span class="req">*</span></label>
+      <input id="au-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')authLogin()">
+    </div>
+    <button onclick="authLogin()" id="auth-btn" style="width:100%;padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#f5c842;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer">
+      🔓 Sign In
+    </button>
+    <div id="auth-err" style="color:#dc2626;font-size:12px;text-align:center;margin-top:10px;display:none;padding:8px;background:rgba(220,38,38,.08);border-radius:8px;border:1px solid rgba(220,38,38,.2)"></div>
+    <p style="font-size:10px;color:var(--muted);margin-top:14px;text-align:center">Contact Admin if you don't have login credentials</p>
+  </div>
+</div>
+
+<!-- MAIN FORM APP -->
+<div id="app-wrap" style="display:none">
+<div class="main">
+
+  <!-- PROGRESS -->
+  <div class="prog-wrap">
+    <div class="prog-steps" id="prog-steps">
+      <div class="pstep active" data-step="1">
+        <div class="pstep-dot">1</div>
+        <div class="pstep-lbl">Call Info</div>
+      </div>
+      <div class="pstep" data-step="2">
+        <div class="pstep-dot">2</div>
+        <div class="pstep-lbl">Problem & Solution</div>
+      </div>
+      <div class="pstep" data-step="3">
+        <div class="pstep-dot">3</div>
+        <div class="pstep-lbl">Parts & Purchase</div>
+      </div>
+      <div class="pstep" data-step="4">
+        <div class="pstep-dot">4</div>
+        <div class="pstep-lbl">Photos & Sign</div>
+      </div>
+      <div class="pstep" data-step="5">
+        <div class="pstep-dot">5</div>
+        <div class="pstep-lbl">Review & Submit</div>
+      </div>
+      <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- STEP 1: CALL INFO -->
+  <div id="step-1">
+    <div class="card">
+      <div class="card-hd"><span class="badge-step">Step 1</span> 📞 Call Information</div>
+      <div class="fgrid">
+        <div class="fg"><label>Ticket / Call ID <span class="req">*</span></label>
+          <input id="f-callid" placeholder="e.g. TKT-12345678 or CALL-001" oninput="autoLinkTicket()">
+        </div>
+        <div class="fg"><label>Call Date <span class="req">*</span></label>
+          <input id="f-date" type="date">
+        </div>
+        <div class="fg"><label>Call Time (Received)</label>
+          <input id="f-time-recv" type="time">
+        </div>
+        <div class="fg"><label>Call Time (Closed)</label>
+          <input id="f-time-close" type="time">
+        </div>
+        <div class="fg full"><label>Employee / Caller Name <span class="req">*</span></label>
+          <input id="f-emp" placeholder="Who raised the call?">
+        </div>
+        <div class="fg"><label>Department <span class="req">*</span></label>
+          <select id="f-dept">
+            <option value="">Select Department</option>
+            <option>Site Engineering</option><option>Civil Works</option>
+            <option>Mechanical</option><option>Electrical</option>
+            <option>Accounts & Finance</option><option>HR & Admin</option>
+            <option>IT Department</option><option>Procurement</option>
+            <option>Management</option><option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Location / Site <span class="req">*</span></label>
+          <input id="f-loc" placeholder="e.g. Head Office / Site Mumbai">
+        </div>
+        <div class="fg"><label>Employee Mobile</label>
+          <input id="f-emp-phone" type="tel" placeholder="9876543210">
+        </div>
+        <div class="fg"><label>Asset / Device Tag</label>
+          <input id="f-asset" placeholder="e.g. JKIL-PC-042">
+        </div>
+        <div class="fg full"><label>Call Category <span class="req">*</span></label>
+          <select id="f-cat">
+            <option value="">Select Category</option>
+            <option>Hardware – Laptop / Desktop</option>
+            <option>Hardware – Printer / Scanner</option>
+            <option>Hardware – UPS / Power</option>
+            <option>Hardware – Networking Device</option>
+            <option>Software – MS Office</option>
+            <option>Software – ERP / SAP</option>
+            <option>Software – AutoCAD / Design</option>
+            <option>Software – OS / Windows</option>
+            <option>Network – Internet / WiFi</option>
+            <option>Network – LAN / Cable</option>
+            <option>Network – VPN</option>
+            <option>Email – Outlook / Access</option>
+            <option>Account – Password Reset</option>
+            <option>New Device / Setup</option>
+            <option>Data / Backup / Recovery</option>
+            <option>Security / Virus</option>
+            <option>CCTV / Surveillance</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="fg"><label>Priority</label>
+          <select id="f-prio">
+            <option value="Low">🟢 Low</option>
+            <option value="Medium">🟡 Medium</option>
+            <option value="High" selected>🔴 High</option>
+            <option value="Critical">🚨 Critical</option>
+          </select>
+        </div>
+        <div class="fg"><label>Call Status <span class="req">*</span></label>
+          <select id="f-status">
+            <option value="Resolved">✅ Resolved</option>
+            <option value="Pending Parts">⏳ Pending – Parts Awaited</option>
+            <option value="Pending Approval">📋 Pending – Approval Needed</option>
+            <option value="Escalated">🔺 Escalated</option>
+            <option value="In Progress">🔄 In Progress</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-next" onclick="goStep(2)">Next: Problem Details →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PROBLEM & SOLUTION -->
+  <div id="step-2" style="display:none">
+    <div class="card">
+      <div class="card-hd"><span class="badge-step">Step 2</span> 🔍 Problem & Solution Details</div>
+      <div class="fgrid">
+        <div class="fg full"><label>Problem Title / Summary <span class="req">*</span></label>
+          <input id="f-prob-title" placeholder="Short description of the issue">
+        </div>
+        <div class="fg full"><label>Detailed Problem Description <span class="req">*</span></label>
+          <textarea id="f-prob-desc" rows="4" placeholder="Kya kharab tha? Kya symptoms the? Kab se tha? User ne kya bataya?"></textarea>
+        </div>
+        <div class="fg full"><label>Root Cause Identified</label>
+          <textarea id="f-root-cause" rows="3" placeholder="Asal karan kya tha issue ka? (e.g. HDD failure, Driver conflict, Power surge...)"></textarea>
+        </div>
+        <div class="fg full"><label>Solution / Action Taken <span class="req">*</span></label>
+          <textarea id="f-solution" rows="4" placeholder="Exactly kya kiya? Step-by-step action liya jo? (e.g. HDD replaced, Windows reinstalled, LAN cable changed...)"></textarea>
+        </div>
+        <div class="fg"><label>Time Taken to Resolve</label>
+          <select id="f-time-taken">
+            <option value="">Select duration</option>
+            <option>Less than 30 mins</option><option>30–60 mins</option>
+            <option>1–2 hours</option><option>2–4 hours</option>
+            <option>4–8 hours</option><option>Multiple visits</option>
+            <option>Ongoing</option>
+          </select>
+        </div>
+        <div class="fg"><label>Resolution Method</label>
+          <select id="f-res-method">
+            <option value="">Select method</option>
+            <option>On-site Visit</option>
+            <option>Remote Support</option>
+            <option>Phone Guidance</option>
+            <option>Hardware Replacement</option>
+            <option>Software Re-installation</option>
+            <option>Configuration Change</option>
+            <option>Escalated to Vendor</option>
+          </select>
+        </div>
+        <div class="fg full"><label>Additional Remarks / Notes for GM</label>
+          <textarea id="f-remarks" rows="3" placeholder="Koi special observation, risk, future recommendation..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(1)">← Back</button>
+      <button class="btn-next" onclick="goStep(3)">Next: Parts & Purchase →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: PARTS & PURCHASE -->
+  <div id="step-3" style="display:none">
+    <div class="card">
+      <div class="card-hd"><span class="badge-step">Step 3</span> 🔩 Parts Used & Purchase Details</div>
+
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;padding:8px 14px;border-radius:8px;border:1.5px solid var(--bdr2);background:#f9fafb">
+          <input type="checkbox" id="chk-parts" onchange="togglePartsSection()"> Parts use kiye / change kiye
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;padding:8px 14px;border-radius:8px;border:1.5px solid var(--bdr2);background:#f9fafb">
+          <input type="checkbox" id="chk-purchase" onchange="togglePurchaseSection()"> Purchase hua (PR/Cash)
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;padding:8px 14px;border-radius:8px;border:1.5px solid var(--bdr2);background:#f9fafb">
+          <input type="checkbox" id="chk-vendor" onchange="toggleVendorSection()"> Vendor involved
+        </label>
+      </div>
+
+      <!-- PARTS TABLE -->
+      <div id="parts-section" style="display:none;margin-bottom:18px">
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:6px">
+          🔧 Parts / Components Used / Replaced
+        </div>
+        <div class="parts-wrap">
+          <div class="parts-hd">
+            <span>Part Name</span>
+            <span>Qty</span>
+            <span class="ph-type">Type</span>
+            <span>Action</span>
+            <span></span>
+          </div>
+          <div id="parts-list">
+            <!-- rows added dynamically -->
+          </div>
+        </div>
+        <button class="add-part-btn" onclick="addPartRow()">➕ Add Part / Component</button>
+      </div>
+
+      <!-- PURCHASE SECTION -->
+      <div id="purchase-section" style="display:none;margin-bottom:18px">
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+          🛒 Purchase Information
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Purchase Type <span class="req">*</span></label>
+            <select id="f-pur-type">
+              <option value="">Select</option>
+              <option value="PR Raised">📋 PR Raised (Purchase Requisition)</option>
+              <option value="Cash Purchase">💵 Cash Purchase</option>
+              <option value="AMC / Warranty">🛡️ AMC / Warranty Claim</option>
+              <option value="Internal Transfer">🔄 Internal Transfer / Stock</option>
+            </select>
+          </div>
+          <div class="fg"><label>PR Number / Bill No.</label>
+            <input id="f-pr-no" placeholder="e.g. PR-2026-0042 or Bill No.">
+          </div>
+          <div class="fg"><label>Amount (₹)</label>
+            <input id="f-amount" type="number" min="0" step="0.01" placeholder="e.g. 2500">
+          </div>
+          <div class="fg"><label>Vendor / Supplier</label>
+            <input id="f-vendor-name" placeholder="Vendor company name">
+          </div>
+          <div class="fg"><label>Purchase Date</label>
+            <input id="f-pur-date" type="date">
+          </div>
+          <div class="fg"><label>Approved By</label>
+            <input id="f-approved-by" placeholder="Who approved the purchase?">
+          </div>
+          <div class="fg full"><label>Purchase Remarks</label>
+            <textarea id="f-pur-remarks" rows="2" placeholder="Any additional info about the purchase..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- VENDOR SECTION -->
+      <div id="vendor-section" style="display:none">
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px">
+          🏢 Vendor / Third-Party Details
+        </div>
+        <div class="fgrid">
+          <div class="fg"><label>Vendor Company</label>
+            <input id="f-vend-co" placeholder="Company name">
+          </div>
+          <div class="fg"><label>Vendor Contact</label>
+            <input id="f-vend-ph" placeholder="Phone / Email">
+          </div>
+          <div class="fg"><label>Service Type</label>
+            <select id="f-vend-type">
+              <option value="">Select</option>
+              <option>Repair & Service</option>
+              <option>Parts Supply</option>
+              <option>AMC Service Visit</option>
+              <option>Installation</option>
+              <option>Data Recovery</option>
+            </select>
+          </div>
+          <div class="fg"><label>Ticket / Job No. (Vendor)</label>
+            <input id="f-vend-job" placeholder="Vendor's reference number">
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:12px 14px;font-size:12px;color:#92400e;margin-top:8px">
+        💡 <strong>Note:</strong> Agar koi bhi part ya purchase nahi hai toh in sections ko skip karein.
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(2)">← Back</button>
+      <button class="btn-next" onclick="goStep(4)">Next: Photos & Signature →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: PHOTOS & SIGNATURE -->
+  <div id="step-4" style="display:none">
+    <div class="card">
+      <div class="card-hd"><span class="badge-step">Step 4</span> 📷 Photos & Engineer Details</div>
+
+      <!-- IMAGE UPLOAD -->
+      <div style="margin-bottom:18px">
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px">
+          📸 Site / Call Photos (Optional but recommended)
+        </div>
+        <div class="img-drop" id="img-drop-zone"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event)">
+          <input type="file" id="img-input" multiple accept="image/*,.pdf"
+                 onchange="handleFileSelect(this.files)">
+          <div class="drop-icon">📷</div>
+          <p><strong>Click to upload or drag & drop</strong><br>Before/After photos, screenshots, damaged parts</p>
+          <small>PNG, JPG, PDF – Max 5MB each – Up to 10 files</small>
+        </div>
+        <div class="img-preview" id="img-preview"></div>
+      </div>
+
+      <div class="fgrid">
+        <div class="fg full" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px">
+          <label style="color:#166534">✅ Engineer Confirmation</label>
+          <div style="font-size:12px;color:#15803d;margin:8px 0;line-height:1.6">
+            Main confirm karta hoon ki upar di gayi saari jaankari sahi aur accurate hai.
+            Ye call report officially J. Kumar Infraprojects ke records me save hogi.
+          </div>
+          <div class="fg">
+            <label>Engineer Full Name <span class="req">*</span></label>
+            <input id="f-eng-name" placeholder="Apna poora naam likhein" readonly style="background:#f0fdf4">
+          </div>
+        </div>
+        <div class="fg"><label>Engineer Employee ID</label>
+          <input id="f-eng-id" placeholder="JKIL-IT-001" readonly style="background:#f9fafb">
+        </div>
+        <div class="fg"><label>Engineer Mobile</label>
+          <input id="f-eng-phone" placeholder="Your contact number">
+        </div>
+        <div class="fg full"><label>Final Comments / Recommendations</label>
+          <textarea id="f-final-comments" rows="3" placeholder="Koi final suggestion, preventive measure ya follow-up needed?"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(3)">← Back</button>
+      <button class="btn-next" onclick="goStep(5)">Next: Review & Submit →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: REVIEW & SUBMIT -->
+  <div id="step-5" style="display:none">
+    <div class="card">
+      <div class="card-hd"><span class="badge-step">Step 5</span> ✅ Review & Submit</div>
+      <div id="review-content">
+        <!-- filled by JS -->
+      </div>
+    </div>
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 14px;font-size:12px;color:#991b1b;margin-bottom:14px">
+      ⚠️ <strong>Submit karne ke baad data change nahi hoga.</strong> Please review karein carefully.
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(4)">← Edit</button>
+      <button class="btn-next" id="submit-btn" onclick="submitCallReport()" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff">
+        <span id="submit-txt">🚀 Submit Call Report</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="step-success" style="display:none">
+    <div class="card success-screen">
+      <div class="suc-icon">🎉</div>
+      <div class="suc-title">Call Report Submitted!</div>
+      <div class="suc-tid" id="suc-call-id"></div>
+      <div class="suc-sub">
+        Report successfully Firebase me save ho gayi hai.<br>
+        Admin aur GM is report ko anytime dekh sakte hain.
+      </div>
+      <div style="margin-top:16px">
+        <a id="wa-share-btn" class="wa-btn" href="#" target="_blank">
+          📱 Share on WhatsApp
+        </a>
+        <button class="copy-btn" onclick="copyReportLink()">
+          🔗 Copy Report Link
+        </button>
+        <button class="new-call-btn" onclick="resetForm()">
+          ➕ New Call Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app-wrap -->
+
+<div class="toast" id="toast"></div>
+
+<div class="footer">&copy; 2025 J. Kumar Infraprojects Limited &nbsp;·&nbsp; Call Report System v2.0 &nbsp;·&nbsp; Developed by <strong>Abhishek Tiwari</strong></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.1/firebase-storage.js";
+
+const FB = {
+  apiKey:"AIzaSyD1NaEmIB9yBh7eoaxOAEV1jVbjE76LZa8",
+  authDomain:"jkumar-ithelpdesk.firebaseapp.com",
+  projectId:"jkumar-ithelpdesk",
+  storageBucket:"jkumar-ithelpdesk.firebasestorage.app",
+  messagingSenderId:"638863597956",
+  appId:"1:638863597956:web:506d8e62c98c29729c3dd1"
+};
+const app     = initializeApp(FB);
+const db      = getFirestore(app);
+const storage = getStorage(app);
+const callCol = collection(db, "call_reports");
+
+// ── ADMIN STORAGE (same as admin portal) ──
+const ADMIN_KEY = 'jkumar_admins_v3';
+function loadAdmins() {
+  try {
+    let a = JSON.parse(localStorage.getItem(ADMIN_KEY)||'null');
+    if(!a) a=[{id:'admin-001',username:'admin',password:'jkumar123',name:'Abhishek Tiwari',empId:'JKIL-0001',role:'IT Professional',level:'admin'}];
+    return a;
+  } catch(e){return[];}
+}
+
+let currentEngineer = null;
+let selectedFiles   = [];
+let currentCallId   = null;
+let currentStep     = 1;
+let partRowCount    = 0;
+
+// ── AUTH ──
+window.authLogin = function() {
+  const u = document.getElementById('au-user').value.trim();
+  const p = document.getElementById('au-pass').value;
+  const err = document.getElementById('auth-err');
+  err.style.display='none';
+  if(!u||!p){err.style.display='block';err.textContent='Please enter username and password.';return;}
+  const admins = loadAdmins();
+  const match  = admins.find(a=>a.username===u&&a.password===p);
+  if(match){
+    currentEngineer = match;
+    document.getElementById('auth-wrap').style.display='none';
+    document.getElementById('app-wrap').style.display='block';
+    // Pre-fill engineer name
+    document.getElementById('f-eng-name').value = match.name||'';
+    document.getElementById('f-eng-id').value   = match.empId||'';
+    // Set today's date
+    document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  } else {
+    err.style.display='block';
+    err.textContent='❌ Invalid credentials. Contact IT Admin.';
+    document.getElementById('au-pass').value='';
+  }
+};
+
+// ── STEP NAVIGATION ──
+window.goStep = function(n) {
+  if(n > currentStep && !validateStep(currentStep)) return;
+  document.getElementById('step-'+currentStep).style.display='none';
+  currentStep = n;
+  const el = document.getElementById('step-'+n) || document.getElementById('step-success');
+  if(el) el.style.display='block';
+  updateProgress(n);
+  if(n===5) buildReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+function updateProgress(step){
+  const total=5, pct=((step-1)/total)*100;
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.querySelectorAll('.pstep').forEach(el=>{
+    const s=parseInt(el.dataset.step);
+    el.classList.toggle('done',s<step);
+    el.classList.toggle('active',s===step);
+  });
+}
+
+function validateStep(s){
+  const req=(id,label)=>{
+    const el=document.getElementById(id);
+    if(!el||!el.value.trim()){showToast('⚠️ '+label+' required!','#dc2626');el&&el.focus();return false;}
+    return true;
+  };
+  if(s===1){
+    return req('f-callid','Call ID') && req('f-date','Call Date') &&
+           req('f-emp','Employee Name') && req('f-dept','Department') &&
+           req('f-loc','Location') && req('f-cat','Category') && req('f-status','Status');
+  }
+  if(s===2) return req('f-prob-title','Problem Title') && req('f-prob-desc','Problem Description') && req('f-solution','Solution');
+  if(s===4) return req('f-eng-name','Engineer Name');
+  return true;
+}
+
+// ── AUTO-LINK TICKET ──
+window.autoLinkTicket = function(){};
+
+// ── PARTS ──
+window.togglePartsSection = function(){
+  const show = document.getElementById('chk-parts').checked;
+  document.getElementById('parts-section').style.display = show?'block':'none';
+  if(show && document.querySelectorAll('.part-row').length===0) addPartRow();
+};
+window.togglePurchaseSection = function(){
+  document.getElementById('purchase-section').style.display = document.getElementById('chk-purchase').checked?'block':'none';
+};
+window.toggleVendorSection = function(){
+  document.getElementById('vendor-section').style.display = document.getElementById('chk-vendor').checked?'block':'none';
+};
+window.addPartRow = function(){
+  partRowCount++;
+  const id=partRowCount;
+  const div=document.createElement('div');
+  div.className='part-row'; div.id='pr-'+id;
+  div.innerHTML=`
+    <input type="text" placeholder="Part name (e.g. 500GB HDD)" id="pn-${id}">
+    <input type="number" min="1" value="1" placeholder="Qty" id="pq-${id}">
+    <select class="pc-type" id="pt-${id}">
+      <option value="Replaced">Replaced</option>
+      <option value="Installed">Installed</option>
+      <option value="Repaired">Repaired</option>
+      <option value="Checked">Checked</option>
+      <option value="Cleaned">Cleaned</option>
+      <option value="Configured">Configured</option>
+    </select>
+    <input type="text" placeholder="Notes" id="pm-${id}">
+    <button class="del-part" onclick="removePartRow(${id})">✕</button>`;
+  document.getElementById('parts-list').appendChild(div);
+};
+window.removePartRow = function(id){
+  const el=document.getElementById('pr-'+id);
+  if(el) el.remove();
+};
+function getPartsData(){
+  const parts=[];
+  document.querySelectorAll('.part-row').forEach(row=>{
+    const id=row.id.split('-')[1];
+    const n=document.getElementById('pn-'+id)?.value.trim();
+    if(n) parts.push({
+      name:n,
+      qty:parseInt(document.getElementById('pq-'+id)?.value)||1,
+      type:document.getElementById('pt-'+id)?.value||'',
+      notes:document.getElementById('pm-'+id)?.value.trim()||''
+    });
+  });
+  return parts;
+}
+
+// ── FILE HANDLING ──
+window.handleFileSelect = function(files){ addFiles(Array.from(files)); };
+window.handleDrop = function(e){
+  e.preventDefault();
+  document.getElementById('img-drop-zone').classList.remove('drag');
+  addFiles(Array.from(e.dataTransfer.files));
+};
+function addFiles(files){
+  files.forEach(f=>{
+    if(f.size>5*1024*1024){showToast('⚠️ '+f.name+' too large (max 5MB)');return;}
+    if(selectedFiles.length>=10){showToast('⚠️ Max 10 files allowed');return;}
+    selectedFiles.push(f);
+  });
+  renderPreviews();
+}
+function renderPreviews(){
+  const wrap=document.getElementById('img-preview');
+  wrap.innerHTML=selectedFiles.map((f,i)=>{
+    const url=URL.createObjectURL(f);
+    const isImg=f.type.startsWith('image/');
+    return`<div class="img-thumb">
+      ${isImg?`<img src="${url}" alt="${f.name}">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;background:#f3f4f6;font-size:24px">📄</div>`}
+      <button class="rm-img" onclick="removeFile(${i})">✕</button>
+      <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:#fff;font-size:8px;padding:2px 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</div>
+    </div>`;
+  }).join('');
+}
+window.removeFile=function(i){selectedFiles.splice(i,1);renderPreviews();};
+
+// ── BUILD REVIEW ──
+function buildReview(){
+  const v=(id)=>document.getElementById(id)?.value.trim()||'—';
+  const ck=(id)=>document.getElementById(id)?.checked;
+  const parts=getPartsData();
+  let html=`
+    <div style="margin-bottom:14px;padding:12px 14px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;color:#f5c842;font-weight:700;font-size:13px">
+      📋 Call Report Summary – Please review before submitting
+    </div>
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px">📞 Call Information</div>
+    <div class="sum-row"><span class="sum-lbl">Call ID</span><span class="sum-val code">${v('f-callid')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Date</span><span class="sum-val">${v('f-date')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Employee</span><span class="sum-val">${v('f-emp')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Department</span><span class="sum-val">${v('f-dept')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Location</span><span class="sum-val">${v('f-loc')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Category</span><span class="sum-val">${v('f-cat')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Priority</span><span class="sum-val">${v('f-prio')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Status</span><span class="sum-val">${v('f-status')}</span></div>
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px">🔍 Problem & Solution</div>
+    <div class="sum-row"><span class="sum-lbl">Problem</span><span class="sum-val">${v('f-prob-title')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Root Cause</span><span class="sum-val">${v('f-root-cause')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Solution</span><span class="sum-val">${v('f-solution')}</span></div>`;
+  if(parts.length){
+    html+=`<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px">🔩 Parts Used (${parts.length})</div>`;
+    parts.forEach(p=>{html+=`<div class="sum-row"><span class="sum-lbl">${p.name}</span><span class="sum-val">Qty: ${p.qty} | ${p.type}${p.notes?' – '+p.notes:''}</span></div>`;});
+  }
+  if(ck('chk-purchase')){
+    html+=`<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px">🛒 Purchase Details</div>
+    <div class="sum-row"><span class="sum-lbl">Type</span><span class="sum-val">${v('f-pur-type')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">PR / Bill No.</span><span class="sum-val code">${v('f-pr-no')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Amount</span><span class="sum-val">₹${v('f-amount')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Vendor</span><span class="sum-val">${v('f-vendor-name')}</span></div>
+    <div class="sum-row"><span class="sum-lbl">Approved By</span><span class="sum-val">${v('f-approved-by')}</span></div>`;
+  }
+  html+=`<div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px">👷 Engineer</div>
+    <div class="sum-row"><span class="sum-lbl">Engineer</span><span class="sum-val">${v('f-eng-name')}</span></div>
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px">📷 Photos</div>
+    <div class="sum-row"><span class="sum-lbl">Files</span><span class="sum-val">${selectedFiles.length?selectedFiles.map(f=>f.name).join(', '):'No photos attached'}</span></div>`;
+  document.getElementById('review-content').innerHTML=html;
+}
+
+// ── SUBMIT ──
+window.submitCallReport = async function(){
+  const btn=document.getElementById('submit-btn');
+  const txt=document.getElementById('submit-txt');
+  btn.disabled=true;
+  txt.innerHTML='<span class="loader"><span class="spin"></span> Uploading images...</span>';
+
+  const v=(id)=>document.getElementById(id)?.value.trim()||'';
+  const ck=(id)=>document.getElementById(id)?.checked||false;
+
+  // Upload images to Firebase Storage
+  const uploadedImages=[];
+  if(selectedFiles.length){
+    const tmpId='TMP-'+Date.now();
+    for(const file of selectedFiles){
+      try{
+        const sRef=ref(storage,`call_images/${tmpId}/${Date.now()}_${file.name}`);
+        await uploadBytes(sRef,file);
+        const url=await getDownloadURL(sRef);
+        uploadedImages.push({name:file.name,url,size:file.size,type:file.type});
+      }catch(e){console.warn('Image upload failed:',e.message);}
+    }
+    txt.innerHTML='<span class="loader"><span class="spin"></span> Saving report...</span>';
+  }
+
+  const callId='CALL-'+Date.now().toString().slice(-8);
+  const now=new Date().toISOString();
+  const parts=getPartsData();
+
+  const report={
+    callId,
+    // Call Info
+    linkedTicketId: v('f-callid'),
+    callDate:       v('f-date'),
+    timeReceived:   v('f-time-recv'),
+    timeClosed:     v('f-time-close'),
+    employeeName:   v('f-emp'),
+    employeePhone:  v('f-emp-phone'),
+    department:     v('f-dept'),
+    location:       v('f-loc'),
+    assetTag:       v('f-asset'),
+    category:       v('f-cat'),
+    priority:       v('f-prio'),
+    callStatus:     v('f-status'),
+    // Problem & Solution
+    problemTitle:   v('f-prob-title'),
+    problemDesc:    v('f-prob-desc'),
+    rootCause:      v('f-root-cause'),
+    solution:       v('f-solution'),
+    timeTaken:      v('f-time-taken'),
+    resolutionMethod: v('f-res-method'),
+    remarks:        v('f-remarks'),
+    // Parts
+    partsUsed:      ck('chk-parts'),
+    parts:          parts,
+    // Purchase
+    purchaseDone:   ck('chk-purchase'),
+    purchaseType:   v('f-pur-type'),
+    prNumber:       v('f-pr-no'),
+    amount:         v('f-amount')||null,
+    vendorName:     v('f-vendor-name'),
+    purchaseDate:   v('f-pur-date'),
+    approvedBy:     v('f-approved-by'),
+    purchaseRemarks:v('f-pur-remarks'),
+    // Vendor
+    vendorInvolved: ck('chk-vendor'),
+    vendorCompany:  v('f-vend-co'),
+    vendorContact:  v('f-vend-ph'),
+    vendorServiceType: v('f-vend-type'),
+    vendorJobNo:    v('f-vend-job'),
+    // Engineer
+    engineerName:   v('f-eng-name'),
+    engineerEmpId:  v('f-eng-id'),
+    engineerPhone:  v('f-eng-phone'),
+    engineerUsername: currentEngineer?.username||'',
+    finalComments:  v('f-final-comments'),
+    // Images
+    images:         uploadedImages,
+    imageCount:     uploadedImages.length,
+    // Meta
+    submittedAt:    serverTimestamp(),
+    submittedAtISO: now,
+    version:        '2.0'
+  };
+
+  try{
+    const docRef = await addDoc(callCol, report);
+    currentCallId = callId;
+    // Update image paths with actual callId
+    if(uploadedImages.length){
+      const { updateDoc } = await import("https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js");
+      await updateDoc(docRef, { firestoreId: docRef.id, callId });
+    }
+
+    // Show success
+    document.getElementById('step-5').style.display='none';
+    document.getElementById('step-success').style.display='block';
+    document.getElementById('suc-call-id').textContent=callId;
+
+    // WhatsApp share link
+    const reportUrl = window.location.origin + '/call_report.html?id='+callId;
+    const waMsg = encodeURIComponent(
+      `📋 *J. Kumar Infraprojects – IT Call Report*\n\n`+
+      `🔖 Call ID: ${callId}\n`+
+      `📅 Date: ${v('f-date')}\n`+
+      `👤 Employee: ${v('f-emp')}\n`+
+      `🏢 Dept: ${v('f-dept')}\n`+
+      `🔧 Issue: ${v('f-prob-title')}\n`+
+      `✅ Status: ${v('f-status')}\n`+
+      `👷 Engineer: ${v('f-eng-name')}\n\n`+
+      `🔗 Full Report: ${reportUrl}`
+    );
+    document.getElementById('wa-share-btn').href=`https://wa.me/?text=${waMsg}`;
+    document.getElementById('wa-share-btn').dataset.url=reportUrl;
+
+    updateProgress(6);
+    showToast('✅ Report submitted successfully!','#16a34a');
+  }catch(e){
+    btn.disabled=false;
+    txt.innerHTML='🚀 Submit Call Report';
+    alert('❌ Submission failed:\n'+e.message+'\n\nCheck internet connection and Firestore rules.');
+  }
+};
+
+window.copyReportLink=function(){
+  const url=document.getElementById('wa-share-btn').dataset.url||window.location.href;
+  navigator.clipboard.writeText(url).then(()=>showToast('🔗 Link copied!','#2563eb'));
+};
+
+window.resetForm=function(){
+  location.reload();
+};
+
+// ── TOAST ──
+function showToast(msg,color='#1a1a2e'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.background=color;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+window.showToast=showToast;
+</script>
+</body>
+</html>
